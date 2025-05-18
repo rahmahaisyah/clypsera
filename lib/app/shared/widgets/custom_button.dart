@@ -43,7 +43,7 @@ class CustomButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/icons/${icon}',
+                  'assets/icons/$icon',
                   height: 16, // Increased size
                   width: 16,
                 ),
