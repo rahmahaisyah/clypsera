@@ -1,3 +1,4 @@
+import 'package:clypsera/app/constants/uidata.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -22,7 +23,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/logo.png'),
+                  image: NetworkImage(logo),
                   scale: 2,
                 ),
               ),
