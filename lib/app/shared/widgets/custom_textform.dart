@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../theme/app_style.dart';
 
@@ -25,9 +26,8 @@ class CustomTextform extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: Style.headLineStyle5),
-        const SizedBox(height: 5),
         SizedBox(
-          width: 349,
+          width: Get.width,
           child: TextFormField(
             onChanged: onChanged,
             obscureText: obscureText ?? false,
