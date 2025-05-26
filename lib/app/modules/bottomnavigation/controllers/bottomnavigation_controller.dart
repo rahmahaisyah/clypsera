@@ -3,25 +3,26 @@ import 'package:clypsera/app/modules/news/views/news_view.dart';
 import 'package:clypsera/app/modules/profile/views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../constants/uidata.dart';
-
-class NavigationItemModel {
-  final String activeIconPath;
-  final String inactiveIconPath;
-  final String label;
-  final Widget screen;
-
-  NavigationItemModel({
-    required this.activeIconPath,
-    required this.inactiveIconPath,
-    required this.label,
-    required this.screen,
-  });
-}
+import '../../../data/models/navigation_item_model.dart';
+import '../../home/controllers/home_controller.dart';
+import '../../news/controllers/news_controller.dart';
+import '../../profile/controllers/profile_controller.dart';
 
 class BottomnavigationController extends GetxController {
   RxInt currentIndex = 0.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Daftarkan controller untuk setiap tab di sini
+    // Mereka akan dibuat hanya ketika pertama kali diakses (lazy)
+    Get.lazyPut<HomeController>(() => HomeController());
+    Get.lazyPut<NewsController>(
+        () => NewsController()); // Pastikan NewsController ada
+    Get.lazyPut<ProfileController>(
+        () => ProfileController()); // Pastikan ProfileController ada
+  }
 
   final List<NavigationItemModel> navigationItems = [
     NavigationItemModel(
