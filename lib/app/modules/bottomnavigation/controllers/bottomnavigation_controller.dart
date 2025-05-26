@@ -15,13 +15,11 @@ class BottomnavigationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Daftarkan controller untuk setiap tab di sini
-    // Mereka akan dibuat hanya ketika pertama kali diakses (lazy)
     Get.lazyPut<HomeController>(() => HomeController());
     Get.lazyPut<NewsController>(
-        () => NewsController()); // Pastikan NewsController ada
+        () => NewsController());
     Get.lazyPut<ProfileController>(
-        () => ProfileController()); // Pastikan ProfileController ada
+        () => ProfileController()); 
   }
 
   final List<NavigationItemModel> navigationItems = [

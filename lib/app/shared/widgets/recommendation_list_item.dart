@@ -24,7 +24,6 @@ class RecommendationListItemWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),

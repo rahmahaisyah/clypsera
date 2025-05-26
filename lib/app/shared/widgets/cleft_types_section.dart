@@ -72,7 +72,7 @@ class CleftTypesSection extends GetView<HomeController> {
                           : CupertinoIcons.chevron_down,
                       size: 18,
                       color: Style
-                          .primaryColor, // Warna ikon sama dengan teks link
+                          .primaryColor, 
                     ),
                   ],
                 );

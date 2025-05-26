@@ -1,14 +1,13 @@
 class NewsArticleModel {
   final String id;
-  final String title; // Digunakan untuk judul utama di Rekomendasi
-  final String? snippet; // Bisa digunakan untuk teks di Breaking News Card
+  final String title; 
+  final String? snippet; 
   final String? imageUrl;
-  final String? articleUrl; // URL ke artikel lengkap
+  final String? articleUrl; 
   final DateTime publishedDate;
-  final String? source; // Nama sumber berita, mis. "Kompass.com"
-  final String? sourceIconUrl; // URL ikon sumber berita (opsional)
-  final String? category; // Mis. "Bandung" untuk Rekomendasi
-  final bool isBookmarked; // Untuk ikon bookmark
+  final String? source; 
+  final String? sourceIconUrl; 
+  final bool isBookmarked; 
 
   NewsArticleModel({
     required this.id,
@@ -19,7 +18,6 @@ class NewsArticleModel {
     required this.publishedDate,
     this.source,
     this.sourceIconUrl,
-    this.category,
     this.isBookmarked = false,
   });
 

@@ -20,12 +20,12 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap:
-          onTap, // Jika search bar tidak langsung aktif dan perlu di-tap dulu
+          onTap, 
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
         decoration: BoxDecoration(
-          color: Style.primaryColorOp4, // Warna dari desain
-          borderRadius: BorderRadius.circular(18), // Radius dari desain
+          color: Style.primaryColorOp4, 
+          borderRadius: BorderRadius.circular(18), 
         ),
         child: Row(
           children: [
@@ -36,14 +36,14 @@ class CustomSearchBar extends StatelessWidget {
                 controller: controller,
                 onChanged: onChanged,
                 enabled:
-                    onTap == null, // Hanya aktif jika tidak ada onTap custom
+                    onTap == null, 
                 decoration: InputDecoration(
                   hintText: hintText,
                   hintStyle: Style.headLineStyle4,
                   border: InputBorder.none,
-                  isDense: true, // Mengurangi padding internal TextField
+                  isDense: true, 
                   contentPadding: EdgeInsets.zero,
-                ),// Gaya teks input
+                ),
               ),
             ),
           ],

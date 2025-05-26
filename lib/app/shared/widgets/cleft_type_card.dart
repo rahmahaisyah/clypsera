@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clypsera/app/data/models/cleft_type_model.dart';
 import 'package:clypsera/app/shared/theme/app_style.dart';
-import 'package:get/get.dart';
 
 class CleftTypeCard extends StatelessWidget {
   final CleftTypeModel cleftType;
@@ -56,7 +55,7 @@ class CleftTypeCard extends StatelessWidget {
           Text(
             cleftType.name,
             textAlign: TextAlign.center,
-            style: Style.headLineStyle17, // Sesuaikan style ini agar cocok
+            style: Style.headLineStyle17, 
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
