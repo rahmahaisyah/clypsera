@@ -13,6 +13,7 @@ class Style {
   static Color redColor = const Color(0xFFB80A0A);
   static Color blueColor = const Color(0xff4C76A5);
   static Color yelloweColor = const Color(0xffFFB61D);
+  static Color bottomNavPillColor = const Color(0xff343330);
 
   static TextStyle textStyle = GoogleFonts.poppins(
     fontSize: 16,
@@ -32,7 +33,7 @@ class Style {
 
   static TextStyle headLineStyle2 = GoogleFonts.poppins(
     fontSize: 21,
-    color: textColor,
+    color: primaryColor,
     fontWeight: FontWeight.bold,
   );
   static TextStyle headLineStyle3 = GoogleFonts.poppins(

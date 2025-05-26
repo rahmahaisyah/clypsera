@@ -44,9 +44,11 @@ class LoginView extends GetView<LoginController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Checkbox(
-                      value: controller.rememberMe.value,
-                      onChanged: controller.toggleRememberMe,
+                    Obx(
+                      () => Checkbox(
+                        value: controller.rememberMe.value,
+                        onChanged: controller.toggleRememberMe,
+                      ),
                     ),
                     Text(
                       "Ingat saya",
@@ -64,7 +66,7 @@ class LoginView extends GetView<LoginController> {
                 CustomButton(
                   text: "Masuk",
                   onTap: () {
-                    Get.offAllNamed(Routes.home);
+                    Get.offAllNamed(Routes.BOTTOMNAVIGATION);
                   },
                   textStyle: Style.headLineStyle6,
                   color: Style.primaryColor,
