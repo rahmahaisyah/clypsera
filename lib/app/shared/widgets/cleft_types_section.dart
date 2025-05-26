@@ -15,9 +15,9 @@ class CleftTypesSection extends GetView<HomeController> {
       children: [
         Text(
           'Jenis sumbing bibir',
-          style: Style.headLineStyle3?.copyWith(fontWeight: FontWeight.bold),
+          style: Style.headLineStyle12,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 5),
         Obx(
           () => GridView.builder(
             itemCount: controller.displayedCleftTypes.length,
@@ -25,9 +25,9 @@ class CleftTypesSection extends GetView<HomeController> {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4, // 4 item per baris
-              childAspectRatio: 0.85, // Sesuaikan rasio agar pas
+              childAspectRatio:
+                  0.8, 
               crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
             ),
             itemBuilder: (context, index) {
               final cleftType = controller.displayedCleftTypes[index];
@@ -38,18 +38,21 @@ class CleftTypesSection extends GetView<HomeController> {
             },
           ),
         ),
-        const SizedBox(height: 8),
-        if (controller.cleftTypes.length > 4) // Tampilkan tombol "Lainnya" jika item lebih dari 4
-          Align(
-            alignment: Alignment.center,
-            child: TextButton(
-              onPressed: controller.toggleShowAllCleftTypes,
-              child: Obx(() => Text(
-                controller.showAllCleftTypes.value ? 'Lebih Sedikit' : 'Lainnya',
-                style: Style.textStyle?.copyWith(color: Style.primaryColor, fontWeight: FontWeight.bold),
-              )),
-            ),
+        const SizedBox(
+          height: 5,
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: TextButton(
+            onPressed: controller.toggleShowAllCleftTypes,
+            child: Obx(() => Text(
+                  controller.showAllCleftTypes.value
+                      ? 'Lebih Sedikit'
+                      : 'Lainnya',
+                  style: Style.headLineStyle16,
+                )),
           ),
+        ),
       ],
     );
   }

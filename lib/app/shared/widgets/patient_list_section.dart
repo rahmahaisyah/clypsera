@@ -16,8 +16,8 @@ class PatientListSection extends GetView<HomeController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'daftar pasien',
-              style: Style.headLineStyle3?.copyWith(fontWeight: FontWeight.bold),
+              'Daftar Pasien',
+              style: Style.headLineStyle12,
             ),
             TextButton(
               onPressed: controller.onSeeMorePatientsTap,

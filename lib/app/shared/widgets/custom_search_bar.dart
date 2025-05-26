@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:clypsera/app/shared/theme/app_style.dart'; 
+import 'package:clypsera/app/shared/theme/app_style.dart';
+import 'package:flutter/cupertino.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final String hintText;
@@ -18,30 +19,31 @@ class CustomSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap, // Jika search bar tidak langsung aktif dan perlu di-tap dulu
+      onTap:
+          onTap, // Jika search bar tidak langsung aktif dan perlu di-tap dulu
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
         decoration: BoxDecoration(
-          color: Style.greyColor1 ?? Colors.grey[200], // Warna dari desain
-          borderRadius: BorderRadius.circular(30), // Radius dari desain
+          color: Style.primaryColorOp4, // Warna dari desain
+          borderRadius: BorderRadius.circular(18), // Radius dari desain
         ),
         child: Row(
           children: [
-            Icon(Icons.search, color: Style.greyColor1 ?? Colors.grey[600]),
+            Icon(CupertinoIcons.search, color: Style.greyColor1),
             const SizedBox(width: 10),
             Expanded(
               child: TextField(
                 controller: controller,
                 onChanged: onChanged,
-                enabled: onTap == null, // Hanya aktif jika tidak ada onTap custom
+                enabled:
+                    onTap == null, // Hanya aktif jika tidak ada onTap custom
                 decoration: InputDecoration(
                   hintText: hintText,
-                  hintStyle: Style.textStyle?.copyWith(color: Style.greyColor1 ?? Colors.grey[600]),
+                  hintStyle: Style.headLineStyle4,
                   border: InputBorder.none,
                   isDense: true, // Mengurangi padding internal TextField
                   contentPadding: EdgeInsets.zero,
-                ),
-                style: Style.textStyle, // Gaya teks input
+                ),// Gaya teks input
               ),
             ),
           ],
