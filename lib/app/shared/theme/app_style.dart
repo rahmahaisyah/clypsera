@@ -11,7 +11,7 @@ class Style {
   static Color greyColor1 = Colors.grey.shade600;
   static Color greyColor2 = const Color(0xFFD9D9D9);
   static Color redColor = const Color(0xFFB80A0A);
-  static Color blueColor = const Color(0xff4C76A5);
+  static Color blueColor = const Color(0xff4E87E0);
   static Color yelloweColor = const Color(0xffFFB61D);
   static Color bottomNavPillColor = const Color(0xff343330);
 
@@ -49,9 +49,9 @@ class Style {
     fontWeight: FontWeight.w500,
   );
   static TextStyle headLineStyle6 = GoogleFonts.poppins(
-    fontSize: 14,
+    fontSize: 12,
     color: Colors.white,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
   );
   static TextStyle headLineStyle7 = GoogleFonts.poppins(
     fontSize: 14,
@@ -86,7 +86,7 @@ class Style {
   static TextStyle headLineStyle13 = GoogleFonts.poppins(
     fontSize: 14,
     color: primaryColor,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w600,
   );
   static TextStyle headLineStyle14 = GoogleFonts.poppins(
     fontSize: 14,
