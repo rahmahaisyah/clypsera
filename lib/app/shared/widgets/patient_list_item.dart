@@ -13,83 +13,165 @@ class PatientListItem extends StatelessWidget {
     this.onTap,
   });
 
-  Widget _getGenderIcon(Gender gender) {
-    // Anda perlu konstanta URL ikon gender di uidata.dart
-    // Contoh: genderFemaleIcon, genderMaleIcon
+  // Fungsi ini sekarang hanya mengembalikan URL ikon dan warna tint berdasarkan gender
+  // Pembuatan widget Image akan dilakukan di dalam build method agar bisa di-stack
+  Map<String, dynamic> _getGenderIconData(Gender gender) {
     String iconUrl;
+    // Warna tint untuk ikon gender (misalnya, biru tua untuk male, pink/biru muda untuk female)
+    // Definisikan ini di app_style.dart
+    Color iconTintColor;
+
     switch (gender) {
       case Gender.female:
         iconUrl = genderFemaleIcon; // Dari uidata.dart
+        iconTintColor = Color(0xffA3BDCD); // Contoh warna
         break;
       case Gender.male:
         iconUrl = genderMaleIcon; // Dari uidata.dart
+        iconTintColor = Style.primaryColor; // Contoh warna
         break;
       default:
-        return const SizedBox(width: 36, height: 36, child: Icon(Icons.person, size: 24)); // Fallback
+        // Fallback jika gender tidak diketahui
+        return {
+          'iconData': Icons.person_rounded,
+          'color': Colors.grey.shade600
+        };
     }
-    return Image.network(
-      iconUrl,
-      width: 20, // Ukuran ikon gender yang lebih kecil
-      height: 20,
-      errorBuilder: (context, error, stackTrace) => const Icon(Icons.person_outline, size: 20),
-    );
+    return {'url': iconUrl, 'color': iconTintColor};
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
-        margin: const EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          color: Style.whiteColor, // Atau warna card dari desain
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            // Avatar/Gender Icon Container
-            Container(
-              padding: const EdgeInsets.all(10), // Padding di dalam lingkaran
-              decoration: BoxDecoration(
-                color: Style.greyColor1 ?? Colors.grey[200], // Warna latar belakang lingkaran
-                shape: BoxShape.circle,
+    final Color cardBackgroundColor = Style.whiteColor ?? Colors.white;
+    // Warna untuk lingkaran besar di belakang ikon gender (abu-abu sangat muda)
+    final Color avatarCircleBackgroundColor = Colors.grey.shade200;
+    // Ukuran untuk lingkaran avatar besar dan ikon gender
+    const double avatarCircleDiameter =
+        52.0; // Diameter lingkaran abu-abu besar
+    const double genderIconContainerDiameter =
+        28.0; // Diameter lingkaran berwarna ikon gender
+    const double genderIconSize =
+        16.0; // Ukuran render ikon gender di dalam lingkarannya
+
+    final genderData = _getGenderIconData(patient.gender);
+
+    // Style teks
+    final TextStyle patientNameStyle = Style.headLineStyle9;
+    final TextStyle patientDetailStyle = Style.headLineStyle15;
+
+    return Card(
+      elevation: 1.5,
+      margin: const EdgeInsets.only(bottom: 12.0),
+      shape: RoundedRectangleBorder(
+        borderRadius:
+            BorderRadius.circular(16), // Radius lebih besar untuk kartu
+      ),
+      color: cardBackgroundColor,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // --- Bagian Avatar dan Ikon Gender ---
+              SizedBox(
+                width: avatarCircleDiameter +
+                    (genderIconContainerDiameter /
+                        3), // Lebar total untuk Stack
+                height: avatarCircleDiameter,
+                child: Stack(
+                  alignment: Alignment
+                      .centerLeft, // Atau Alignment.center untuk posisi tengah
+                  children: [
+                    // Lingkaran Abu-abu Besar (Avatar Placeholder)
+                    Container(
+                      width: avatarCircleDiameter,
+                      height: avatarCircleDiameter,
+                      decoration: BoxDecoration(
+                        color: avatarCircleBackgroundColor,
+                        shape: BoxShape.circle,
+                      ),
+                      // Anda bisa menambahkan Image.network di sini jika ada URL avatar pasien
+                      // child: patient.avatarUrl != null
+                      //   ? ClipOval(child: Image.network(patient.avatarUrl!, fit: BoxFit.cover))
+                      //   : null,
+                    ),
+                    // Lingkaran Ikon Gender yang Menumpuk
+                    Positioned(
+                      // Sesuaikan posisi agar sedikit tumpang tindih dan ke kanan bawah
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        width: genderIconContainerDiameter,
+                        height: genderIconContainerDiameter,
+                        decoration: BoxDecoration(
+                            color: genderData['color']
+                                as Color, // Warna latar ikon gender (biru/pink)
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: cardBackgroundColor,
+                                width: 2.0), // Border putih
+                            boxShadow: [
+                              // Shadow halus untuk ikon gender
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                blurRadius: 3,
+                                offset: const Offset(1, 1),
+                              )
+                            ]),
+                        child: Center(
+                          child: genderData['iconData'] != null
+                              ? Icon(genderData['iconData'] as IconData,
+                                  color: Colors.white, size: genderIconSize)
+                              : Image.network(
+                                  genderData['url'] as String,
+                                  width: genderIconSize,
+                                  height: genderIconSize,
+                                  color: Colors
+                                      .white, // Ikon gender berwarna putih di atas latar berwarna
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Icon(Icons.person,
+                                          size: genderIconSize,
+                                          color: Colors.white),
+                                ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: _getGenderIcon(patient.gender),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    patient.name,
-                    style: Style.headLineStyle3?.copyWith(fontWeight: FontWeight.bold), // Sesuaikan style
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    patient.cleftDescription,
-                    style: Style.textStyle?.copyWith(fontSize: 12, color: Style.greyColor1), // Sesuaikan style
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      patient.name,
+                      style: patientNameStyle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      patient.cleftDescription,
+                      style: patientDetailStyle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Text(
-              patient.date,
-              style: Style.textStyle?.copyWith(fontSize: 12, color: Style.greyColor1), // Sesuaikan style
-            ),
-          ],
+              const SizedBox(width: 12),
+              Text(
+                patient.date,
+                style: patientDetailStyle.copyWith(fontSize: 11),
+              ),
+            ],
+          ),
         ),
       ),
     );
