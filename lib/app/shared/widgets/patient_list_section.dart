@@ -28,7 +28,7 @@ class PatientListSection extends GetView<HomeController> {
             ),
           ],
         ),
-        const SizedBox(height: 8), // Sedikit spasi sebelum list
+        const SizedBox(height: 8), 
         Obx(
           () => ListView.builder(
             itemCount: controller.patients.length > 5 ? 5 : controller.patients.length, 

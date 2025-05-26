@@ -5,7 +5,6 @@ import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:get/get.dart'; 
 import 'package:clypsera/app/modules/news/controllers/news_controller.dart';
 
-
 class BreakingNewsCard extends StatelessWidget {
   final NewsArticleModel article;
   final VoidCallback? onTap;
@@ -18,7 +17,7 @@ class BreakingNewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeAgo = Get.find<NewsController>().getTimeAgo(article.publishedDate); // Asumsi ada helper getTimeAgo di controller
+    final timeAgo = Get.find<NewsController>().getTimeAgo(article.publishedDate);
 
     return GestureDetector(
       onTap: onTap,
@@ -52,7 +51,7 @@ class BreakingNewsCard extends StatelessWidget {
                     bottomLeft: Radius.circular(16.0),
                     bottomRight: Radius.circular(16.0),
                   ),
-                  gradient: LinearGradient( // Gradient agar teks lebih terbaca
+                  gradient: LinearGradient( 
                     colors: [Colors.black.withOpacity(0.7), Colors.black.withOpacity(0.0)],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
@@ -75,7 +74,7 @@ class BreakingNewsCard extends StatelessWidget {
                             child: Icon(CupertinoIcons.checkmark_seal_fill, color: Style.blueColor, size: 18),
                           ),
                         Text(
-                          '• $timeAgo', // Menggunakan helper timeAgo
+                          '• $timeAgo',
                           style: Style.headLineStyle6,
                         ),
                       ],

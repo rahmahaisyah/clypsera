@@ -14,13 +14,13 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Style.whiteColor,
-        elevation: 0.5, // Sedikit shadow untuk appbar
+        elevation: 0.5, 
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Clypsera',
-              style: Style.headLineStyle2, // Pastikan warna teks sesuai
+              style: Style.headLineStyle2, 
             ),
             InkWell(
               onTap: controller.onNotificationTap,
@@ -40,20 +40,19 @@ class HomeView extends GetView<HomeController> {
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Padding( // Mengganti Container dengan Padding untuk konsistensi
-          padding: const EdgeInsets.all(16.0), // Padding keseluruhan
+        child: Padding( 
+          padding: const EdgeInsets.all(16.0), 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomSearchBar(
                 controller: controller.searchController,
-                // onChanged: (value) => controller.onSearchChanged(value), // Jika ada fungsi search
               ),
               const SizedBox(height: 24),
               const CleftTypesSection(),
               const SizedBox(height: 24),
               const PatientListSection(),
-              const SizedBox(height: 24), // Spasi di akhir scroll
+              const SizedBox(height: 24), 
             ],
           ),
         ),

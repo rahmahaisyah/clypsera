@@ -17,10 +17,7 @@ class LoginController extends GetxController {
 
   Future<void> login() async {
     try {
-      // final user = await _authService.login(email.value, password.value);
-      // if (user != null) {
-      //   Get.offNamed(Routes.BOTTOMNAVIGATION);
-      // }
+      
     } catch (e) {
       Get.snackbar('Login Failed', e.toString());
     }
@@ -28,12 +25,7 @@ class LoginController extends GetxController {
 
   Future<void> loginWithGoogle() async {
     try {
-      // // final user = await _authService.loginWithGoogle();
-      // // if (user != null) {
-      // //   Get.offNamed(Routes.BOTTOMNAVIGATION);
-      // } else {
-      //   Get.snackbar('Login Canceled', 'User canceled the Google sign-in.');
-      // }
+      
     } catch (e) {
       Get.snackbar('Login Failed', e.toString());
     }

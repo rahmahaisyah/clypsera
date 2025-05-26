@@ -21,13 +21,13 @@ class NewsController extends GetxController {
 
   Future<void> fetchBreakingNews() async {
     isLoadingBreaking.value = true;
-    //await Future.delayed(const Duration(milliseconds: 1200)); // Simulasi API
+    await Future.delayed(const Duration(milliseconds: 1200)); 
 
     // Data dummy untuk Breaking News
     breakingNewsList.assignAll([
       NewsArticleModel(
         id: 'bn1',
-        title: 'Kamu makan apa hari ini, Kok enak sekali kelihatannya.', // Ini akan jadi snippet di kartu
+        title: 'Kamu makan apa hari ini, Kok enak sekali kelihatannya.', 
         snippet: 'Kamu makan apa hari ini, Kok enak sekali kelihatannya.',
         imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60', // Ganti dengan URL gambar yang relevan
         articleUrl: 'https://example.com/news/breaking1',
@@ -68,17 +68,15 @@ class NewsController extends GetxController {
       NewsArticleModel(
         id: 'rec1',
         title: 'Penjelasan ilmiah dibalik kekenyangan massal',
-        category: 'Bandung',
         imageUrl: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZvb2QlMjBwbGF0ZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=400&q=60',
         articleUrl: 'https://example.com/news/rec1',
-        publishedDate: DateTime(2025, 2, 21), // Sesuai gambar
+        publishedDate: DateTime(2025, 2, 21), 
         source: 'Kompasdot.com',
-        sourceIconUrl: 'https://seeklogo.com/images/K/kompas-logo-42E326930F-seeklogo.com.png' // Contoh URL ikon sumber
+        sourceIconUrl: 'https://seeklogo.com/images/K/kompas-logo-42E326930F-seeklogo.com.png' 
       ),
       NewsArticleModel(
         id: 'rec2',
         title: 'Tips Berkebun di Lahan Sempit untuk Pemula',
-        category: 'Lifestyle',
         imageUrl: 'https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z2FyZGVuaW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=400&q=60',
         articleUrl: 'https://example.com/news/rec2',
         publishedDate: DateTime.now().subtract(const Duration(days: 2)),
@@ -88,7 +86,6 @@ class NewsController extends GetxController {
       NewsArticleModel(
         id: 'rec3',
         title: 'Panduan Memilih Laptop Terbaik untuk Produktivitas',
-        category: 'Teknologi',
         imageUrl: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wfGVufDB8fDB8fHww&auto=format&fit=crop&w=400&q=60',
         articleUrl: 'https://example.com/news/rec3',
         publishedDate: DateTime.now().subtract(const Duration(days: 4)),
@@ -105,28 +102,20 @@ class NewsController extends GetxController {
 
   void openArticle(NewsArticleModel article) async {
     Get.snackbar('Buka Artikel', article.title);
-    // final Uri url = Uri.parse(article.articleUrl ?? 'https://example.com');
-    // if (!await launchUrl(url)) {
-    //   Get.snackbar('Error', 'Tidak bisa membuka link');
-    // }
   }
 
   void onSeeMoreTap(String section) {
     Get.snackbar('Lihat Lebih Banyak', section);
-    // Implementasi navigasi ke halaman daftar lengkap berita untuk section tersebut
   }
 
-  void onNotificationTap() { // Metode ini bisa dipanggil dari AppBar
+  void onNotificationTap() {
     Get.snackbar('Notifikasi', 'Tombol notifikasi ditekan!');
   }
 
   void toggleBookmark(NewsArticleModel article) {
-    // Logika untuk mengubah status bookmark
-    // Ini hanya contoh, Anda mungkin perlu menyimpan state ini secara persisten
     int index = breakingNewsList.indexWhere((a) => a.id == article.id);
     if (index != -1) {
       breakingNewsList[index] = NewsArticleModel(
-        // Salin semua properti lain dan ubah isBookmarked
         id: breakingNewsList[index].id,
         title: breakingNewsList[index].title,
         snippet: breakingNewsList[index].snippet,
@@ -135,7 +124,6 @@ class NewsController extends GetxController {
         publishedDate: breakingNewsList[index].publishedDate,
         source: breakingNewsList[index].source,
         sourceIconUrl: breakingNewsList[index].sourceIconUrl,
-        category: breakingNewsList[index].category,
         isBookmarked: !breakingNewsList[index].isBookmarked,
       );
       breakingNewsList.refresh(); 
