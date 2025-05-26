@@ -20,7 +20,7 @@ class HomeView extends GetView<HomeController> {
           children: [
             Text(
               'Clypsera',
-              style: Style.headLineStyle2?.copyWith(color: Style.primaryColor), // Pastikan warna teks sesuai
+              style: Style.headLineStyle2, // Pastikan warna teks sesuai
             ),
             InkWell(
               onTap: controller.onNotificationTap,

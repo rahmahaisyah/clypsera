@@ -3,13 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Style {
   static Color primaryColor = const Color(0xff195981);
-  static Color primaryColor30 = const Color(0x4D589A73);
-  static Color primaryColor10 = const Color(0x1A589A73);
+  static Color primaryColorOp4 = const Color(0x08195981);
   static Color textColor = const Color(0xff3b3b3b);
   static Color bgColor = const Color(0xffeeedf2);
   static Color whiteColor = const Color(0xFFFFFFFF);
-  static Color greyColor1 = const Color(0xFFEFEFEF);
-  static Color greyColor2 = const Color(0xFF656565);
+  static Color blackColor = const Color(0xFF000000);
+  static Color greyColor1 = Colors.grey.shade600;
+  static Color greyColor2 = const Color(0xFFD9D9D9);
   static Color redColor = const Color(0xFFB80A0A);
   static Color blueColor = const Color(0xff4C76A5);
   static Color yelloweColor = const Color(0xffFFB61D);

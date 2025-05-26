@@ -14,36 +14,59 @@ class CleftTypeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Definisikan ukuran ikon dan container ikon di sini agar mudah diubah
+    const double iconRenderSize = 36.0; // Ukuran ikon akan dirender
+    const double iconContainerSize = 60.0; // Ukuran container pembungkus ikon
+    const double iconContainerBorderRadius = 12.0;
+
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12), // Untuk efek ripple yang sesuai
-      child: Container(
-        width: 80, // Sesuaikan lebar berdasarkan desain
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.network(
-              cleftType.iconUrl,
-              width: 36, // Ukuran ikon dari desain
-              height: 36,
-              errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image, size: 36),
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return const SizedBox(
-                    width: 36, height: 36, child: Center(child: CircularProgressIndicator(strokeWidth: 2,)));
-              },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+            // Container untuk latar belakang ikon
+            width: iconContainerSize,
+            height: iconContainerSize,
+            decoration: BoxDecoration(
+              color: Style.primaryColorOp4, // Warna latar belakang ikon
+              borderRadius: BorderRadius.circular(iconContainerBorderRadius),
             ),
-            const SizedBox(height: 8),
-            Text(
-              cleftType.name,
-              textAlign: TextAlign.center,
-              style: Style.textStyle?.copyWith(fontSize: 12, fontWeight: FontWeight.w500), // Sesuaikan style
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            child: Center(
+              // Untuk memastikan ikon ada di tengah jika ada perbedaan ukuran
+              child: ClipRRect(
+                // Memastikan gambar ikon juga ter-clip
+                borderRadius: BorderRadius.circular(iconContainerBorderRadius),
+                child: Image.network(
+                  cleftType.iconUrl,
+                  width: iconRenderSize,
+                  height: iconRenderSize,
+                  fit: BoxFit.fitWidth,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const SizedBox(
+                        width: iconRenderSize,
+                        height: iconRenderSize,
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        )));
+                  },
+                ),
+              ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            cleftType.name,
+            textAlign: TextAlign.center,
+            style: Style.headLineStyle17, // Sesuaikan style ini agar cocok
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
     );
   }
