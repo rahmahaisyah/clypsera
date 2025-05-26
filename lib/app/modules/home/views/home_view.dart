@@ -26,10 +26,10 @@ class HomeView extends GetView<HomeController> {
               onTap: controller.onNotificationTap,
               customBorder: const CircleBorder(),
               child: Padding(
-                padding: const EdgeInsets.all(8.0), // Area tap lebih besar
+                padding: const EdgeInsets.all(8.0), 
                 child: Image.network(
-                  notifIcon, // Dari uidata.dart
-                  width: 20, // Sesuaikan ukuran ikon notifikasi
+                  notifIcon, 
+                  width: 20, 
                   height: 20,
                   errorBuilder: (context, error, stackTrace) => const Icon(Icons.notifications_none, size: 20),
                 ),
