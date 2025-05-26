@@ -64,9 +64,9 @@ class Style {
     fontWeight: FontWeight.bold,
   );
   static TextStyle headLineStyle9 = GoogleFonts.poppins(
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.black,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
   );
   static TextStyle headLineStyle10 = GoogleFonts.poppins(
     fontSize: 16,
@@ -95,7 +95,7 @@ class Style {
   );
   static TextStyle headLineStyle15 = GoogleFonts.poppins(
     fontSize: 12,
-    color: greyColor2,
+    color: greyColor1,
     fontWeight: FontWeight.w400,
   );
   static TextStyle headLineStyle16 = GoogleFonts.poppins(
