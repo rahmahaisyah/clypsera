@@ -1,7 +1,7 @@
 import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 
-class InfoSectionWidget extends StatelessWidget {
+class InfoSectionWidget extends StatefulWidget {
   final String title;
   final bool isExpanded;
   final ValueChanged<bool> onExpansionChanged;
@@ -16,45 +16,51 @@ class InfoSectionWidget extends StatelessWidget {
   });
 
   @override
+  State<InfoSectionWidget> createState() => _InfoSectionWidgetState();
+}
+
+class _InfoSectionWidgetState extends State<InfoSectionWidget> {
+  bool isTapped = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0.0),
-      child: ExpansionPanelList(
-        elevation: 0,
-        expandedHeaderPadding: EdgeInsets.zero,
-        dividerColor: Style.greyColor2,
-        animationDuration: const Duration(milliseconds: 300),
-        expansionCallback: (int panelIndex, bool newIsExpanded) {
-          onExpansionChanged(newIsExpanded);
-        },
-        children: [
-          ExpansionPanel(
-            backgroundColor: Style.whiteColor,
-            canTapOnHeader: true,
-            isExpanded: isExpanded,
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return ListTile(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-                title: Text(
-                  title,
-                  style: Style.headLineStyle2
-                ),
-              );
-            },
-            body: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.only(bottom: 8.0),
-              decoration:
-                  const BoxDecoration(border: Border(top: BorderSide.none)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: children,
-              ),
+    return Column(
+      children: [
+        InkWell(
+          onTap: () async {
+            setState(() => isTapped = true);
+            await Future.delayed(const Duration(milliseconds: 100));
+            setState(() => isTapped = false);
+            widget.onExpansionChanged(!widget.isExpanded);
+          },
+          splashColor: Style.primaryColorOp4,
+          highlightColor: Style.primaryColorOp4,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            color: isTapped ? Colors.grey[200] : Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(widget.title, style: Style.headLineStyle2),
+                Icon(
+                  widget.isExpanded ? Icons.expand_less : Icons.expand_more,
+                  size: 24.0,
+                  color: Style.primaryColor,
+                )
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+        if (widget.isExpanded)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: widget.children,
+            ),
+          ),
+      ],
     );
   }
 }

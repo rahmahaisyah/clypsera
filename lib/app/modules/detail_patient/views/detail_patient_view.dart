@@ -58,6 +58,7 @@ class DetailPatientView extends GetView<DetailPatientController> {
         final patient = controller.patientData.value!;
 
         return SingleChildScrollView(
+          padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -70,8 +71,6 @@ class DetailPatientView extends GetView<DetailPatientController> {
                 ),
               ),
               const SizedBox(height: 8),
-
-              // Informasi Pasien Section
               Obx(() => InfoSectionWidget(
                     title: 'Informasi pasien',
                     isExpanded: controller.isPatientInfoExpanded.value,
@@ -98,7 +97,7 @@ class DetailPatientView extends GetView<DetailPatientController> {
                         InfoRowWidget(label: 'Pekerjaan', value: patient.job!),
                     ],
                   )),
-
+              Divider(color: Colors.grey[200], height: 1),
               // Informasi Penyakit Section
               Obx(() => InfoSectionWidget(
                     title: 'Informasi penyakit',
@@ -116,7 +115,7 @@ class DetailPatientView extends GetView<DetailPatientController> {
                               'N/A'), // Sesuaikan format jika ini DateTime
                     ],
                   )),
-
+              Divider(color: Colors.grey[200], height: 1),
               // Informasi Pengobatan Section
               Obx(() => InfoSectionWidget(
                     title: 'Informasi pengobatan',
@@ -135,43 +134,43 @@ class DetailPatientView extends GetView<DetailPatientController> {
                               'N/A'), // Sesuaikan format jika ini DateTime
                     ],
                   )),
+              Divider(color: Colors.grey[200], height: 1),
               Obx(() => InfoSectionWidget(
                   title: 'Informasi lainnya',
                   isExpanded: controller.isTreatmentInfoExpanded.value,
-                  onExpansionChanged: controller.toggleTreatmentInfoExpansion,
+                  onExpansionChanged: controller.onOtherInfoTapped,
                   children: [
-                    ]       
-                  )),
+                      ]       
+                    )),
+
+              Divider(color: Colors.grey[200], height: 1),
               Obx(() => InfoSectionWidget(
                   title: 'Gambar',
                   isExpanded: controller.isTreatmentInfoExpanded.value,
-                  onExpansionChanged: controller.toggleTreatmentInfoExpansion,
+                  onExpansionChanged: controller.onImagesTapped,
                   children: [
-                    ]       
-                  )),
+                      ]       
+                    )),
               const SizedBox(height: 32),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0, vertical: 16.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Style.primaryColor,
-                    padding: const EdgeInsets.symmetric(vertical: 14.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                  ),
-                  onPressed: controller.onRequestDataTapped,
-                  child: Text(
-                    'Request data',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Style.whiteColor,
-                        fontWeight: FontWeight.w600),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Style.primaryColor,
+                  padding: const EdgeInsets.symmetric(vertical: 14.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
                   ),
                 ),
+                onPressed: controller.onRequestDataTapped,
+                child: Text(
+                  'Request data',
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Style.whiteColor,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
+
               const SizedBox(height: 24),
             ],
           ),
