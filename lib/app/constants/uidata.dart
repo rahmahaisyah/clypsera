@@ -26,3 +26,5 @@ const String newsIcon =
     "https://res.cloudinary.com/dg9ol2bdm/image/upload/v1747750999/Vector_6_jbrkgs.png";
 const String profileIcon =
     "https://res.cloudinary.com/dg9ol2bdm/image/upload/v1747751058/Vector_7_omq0wj.png";
+const String noImage =
+    'https://res.cloudinary.com/dg9ol2bdm/image/upload/v1748324195/noImage_hec1of.jpg';
