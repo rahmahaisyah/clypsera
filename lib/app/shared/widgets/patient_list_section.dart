@@ -40,7 +40,7 @@ class PatientListSection extends GetView<HomeController> {
               final patient = controller.patients[index];
               return PatientListItem(
                 patient: patient,
-                onTap: () => Get.toNamed(Routes.detailPatient),
+                onTap: () => Get.offAllNamed(Routes.detailPatient),
               );
             },
           ),

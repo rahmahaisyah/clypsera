@@ -84,13 +84,14 @@ class DetailPatientController extends GetxController {
         snackPosition: SnackPosition.TOP);
   }
 
-  void onOtherInfoTapped() {
-    Get.snackbar('Navigasi', 'Menuju Informasi Lainnya...',
+  void onOtherInfoTapped(bool isExpanded) {
+    Get.snackbar(
+        'Navigasi', isExpanded ? 'Menuju Informasi Lainnya...' : 'Ditutup',
         snackPosition: SnackPosition.TOP);
   }
 
-  void onImagesTapped() {
-    Get.snackbar('Navigasi', 'Menuju Galeri Gambar...',
+  void onImagesTapped(bool isExpanded) {
+    Get.snackbar('Navigasi', isExpanded ? 'Menuju Galeri Gambar...' : 'Ditutup',
         snackPosition: SnackPosition.TOP);
   }
 }
