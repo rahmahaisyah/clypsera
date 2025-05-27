@@ -1,4 +1,5 @@
 import 'package:clypsera/app/shared/theme/app_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MoreInfoSectionWidget extends StatelessWidget {
@@ -13,16 +14,17 @@ class MoreInfoSectionWidget extends StatelessWidget {
     this.address,
   });
 
-  Widget _buildInfoRow(BuildContext context, {required IconData icon, required String label, required String? value}) {
+  Widget _buildInfoRow(BuildContext context,
+      {required IconData icon, required String label, required String? value}) {
     if (value == null || value.isEmpty) {
-      return const SizedBox.shrink(); // Jangan tampilkan jika value kosong
+      return const SizedBox.shrink();
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(icon, size: 22, color: Style.primaryColor),
+          Icon(icon, size: 26, color: Style.primaryColor),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
@@ -30,12 +32,12 @@ class MoreInfoSectionWidget extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: Style.headLineStyle14,
+                  style: Style.headLineStyle15,
                 ),
                 const SizedBox(height: 3),
                 Text(
                   value,
-                  style: Style.headLineStyle14,
+                  style: Style.headLineStyle13,
                 ),
               ],
             ),
@@ -53,20 +55,20 @@ class MoreInfoSectionWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'More info',
-            style: Style.headLineStyle14,
+            'Informasi Lebih',
+            style: Style.headLineStyle19,
           ),
           const SizedBox(height: 8),
           _buildInfoRow(
             context,
-            icon: Icons.phone_outlined,
+            icon: CupertinoIcons.phone,
             label: 'Nomor telpon',
             value: phoneNumber,
           ),
           Divider(color: Colors.grey[200], height: 1),
           _buildInfoRow(
             context,
-            icon: Icons.badge_outlined, 
+            icon: Icons.description_outlined,
             label: 'NIK',
             value: nik,
           ),

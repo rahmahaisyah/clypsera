@@ -20,7 +20,7 @@ class PatientListItem extends StatelessWidget {
     switch (gender) {
       case Gender.female:
         iconUrl = genderFemaleIcon; 
-        iconTintColor = Color(0xffA3BDCD); 
+        iconTintColor = Style.blueColor2; 
       case Gender.male:
         iconUrl = genderMaleIcon; 
         iconTintColor = Style.primaryColor; 
@@ -151,7 +151,7 @@ class PatientListItem extends StatelessWidget {
               const SizedBox(width: 12),
               Text(
                 patient.date,
-                style: patientDetailStyle.copyWith(fontSize: 11),
+                style: patientDetailStyle,
               ),
             ],
           ),

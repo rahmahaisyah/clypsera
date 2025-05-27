@@ -26,12 +26,12 @@ class ProfileController extends GetxController {
       await Future.delayed(const Duration(seconds: 1));
       currentUser.value = UserProfileModel(
         id: 'user123',
-        name: 'Nama kamu',
-        email: 'Namakamu23@gmail.com',
-        avatarUrl: 'https://i.pravatar.cc/150?img=68',
-        gender: Gender.male,
-        job: 'Mahasigma',
-        dateOfBirth: DateTime(2005, 5, 24),
+        name: 'Rahmah Aisyah',
+        email: 'rahmahasyh@gmail.com',
+        avatarUrl: '',
+        gender: Gender.female,
+        job: 'Mahasiswa',
+        dateOfBirth: DateTime(2006, 03, 19),
         phoneNumber: '0857-1633-7149',
         nik: '127183617771666280',
         address: 'Jl. Telekomunikasi, Telkom University.',
