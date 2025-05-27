@@ -22,16 +22,17 @@ class PatientListSection extends GetView<HomeController> {
             TextButton(
               onPressed: controller.onSeeMorePatientsTap,
               child: Text(
-                'Tampilkan Semua',
+                'Selengkapnya',
                 style: Style.headLineStyle4,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8), 
+        const SizedBox(height: 8),
         Obx(
           () => ListView.builder(
-            itemCount: controller.patients.length > 5 ? 5 : controller.patients.length, 
+            itemCount:
+                controller.patients.length > 5 ? 5 : controller.patients.length,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {

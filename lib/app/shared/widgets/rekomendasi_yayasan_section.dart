@@ -16,59 +16,57 @@ class RekomendasiYayasanSection extends StatelessWidget {
 
     return SafeArea(
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Rekomendasi yayasan', style: Style.headLineStyle12),
-                TextButton(
-                  onPressed: controller.onSeeMoreTapped,
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    minimumSize: const Size(50, 30), 
-                    tapTargetSize: MaterialTapTargetSize
-                        .shrinkWrap, 
-                  ),
-                  child: Text(
-                    'Tampilkan Semua',
-                    style: Style.headLineStyle4,
-                  ),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Rekomendasi yayasan', style: Style.headLineStyle12),
+              TextButton(
+                onPressed: controller.onSeeMoreTapped,
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  minimumSize: const Size(50, 30),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            Obx(() {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
-      
-              if (controller.yayasanList.isEmpty) {
-                return const Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20.0),
-                    child: Text('Tidak ada rekomendasi yayasan saat ini.'),
-                  ),
-                );
-              }
-      
-              return SizedBox(
-                height: 185,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: controller.yayasanList.length,
-                  itemBuilder: (context, index) {
-                    final yayasan = controller.yayasanList[index];
-                    return YayasanCard(
-                      yayasan: yayasan,
-                      onTap: () => controller.onYayasanCardTapped(yayasan),
-                    );
-                  },
+                child: Text(
+                  'Selengkapnya',
+                  style: Style.headLineStyle4,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16.0),
+          Obx(() {
+            if (controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (controller.yayasanList.isEmpty) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20.0),
+                  child: Text('Tidak ada rekomendasi yayasan saat ini.'),
                 ),
               );
-            }),
-          ],
-         
+            }
+
+            return SizedBox(
+              height: 185,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: controller.yayasanList.length,
+                itemBuilder: (context, index) {
+                  final yayasan = controller.yayasanList[index];
+                  return YayasanCard(
+                    yayasan: yayasan,
+                    onTap: () => controller.onYayasanCardTapped(yayasan),
+                  );
+                },
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
