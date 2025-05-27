@@ -1,30 +1,40 @@
-import 'package:equatable/equatable.dart';
-
 enum Gender { male, female, unknown }
 
-class UserProfileModel extends Equatable {
+class UserProfileModel  {
   final String id;
   final String name;
   final String email;
-  final String? avatarUrl; 
-  final Gender gender;  
-  final String? job;       
-  final DateTime? dateOfBirth; 
+  final String? avatarUrl;
+  final Gender gender;
+  final String? job;
+  final DateTime? dateOfBirth;
   final String? phoneNumber;
   final String? nik;
   final String? address;
+  final String? type;
+  final String? organizer; 
+  final String? uploadDate;
+  final String? operationLocation;
+  final String? operationTechnique;
+  final String? operationDate;
 
   const UserProfileModel({
     required this.id,
     required this.name,
     required this.email,
     this.avatarUrl,
-    required this.gender, 
+    required this.gender,
     this.job,
     this.dateOfBirth,
     this.phoneNumber,
     this.nik,
     this.address,
+    this.type,
+    this.organizer,
+    this.uploadDate,
+    this.operationLocation,
+    this.operationTechnique,
+    this.operationDate,
   });
 
   // Factory constructor untuk membuat instance dari JSON (data dari API)
@@ -36,12 +46,18 @@ class UserProfileModel extends Equatable {
       avatarUrl: json['avatarUrl'] as String?,
       gender: _genderFromString(json['gender'] as String?),
       job: json['job'] as String?,
-      dateOfBirth: json['dateOfBirth'] != null 
-                   ? DateTime.tryParse(json['dateOfBirth'] as String) 
-                   : null,
+      dateOfBirth: json['dateOfBirth'] != null
+          ? DateTime.tryParse(json['dateOfBirth'] as String)
+          : null,
       phoneNumber: json['phoneNumber'] as String?,
       nik: json['nik'] as String?,
       address: json['address'] as String?,
+      type: json['type'] as String? ?? 'N/A', // atau json['cleftDescription']
+      organizer: json['organizer'] as String? ?? 'N/A',
+      uploadDate: json['uploadDate'] as String? ?? 'N/A',
+      operationLocation: json['operationLocation'] as String? ?? 'N/A',
+      operationTechnique: json['operationTechnique'] as String? ?? 'N/A',
+      operationDate: json['operationDate'] as String? ?? 'N/A',
     );
   }
 
@@ -58,50 +74,14 @@ class UserProfileModel extends Equatable {
       'phoneNumber': phoneNumber,
       'nik': nik,
       'address': address,
+      'type': type,
+      'organizer': organizer,
+      'uploadDate': uploadDate,
+      'operationLocation': operationLocation,
+      'operationTechnique': operationTechnique,
+      'operationDate': operationDate,
     };
   }
-
-  // CopyWith untuk update immutable
-  UserProfileModel copyWith({
-    String? id,
-    String? name,
-    String? email,
-    String? avatarUrl,
-    Gender? gender,
-    String? job,
-    DateTime? dateOfBirth,
-    String? phoneNumber,
-    String? nik,
-    String? address,
-    String? bio,
-  }) {
-    return UserProfileModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      avatarUrl: avatarUrl ?? this.avatarUrl,
-      gender: gender ?? this.gender,
-      job: job ?? this.job,
-      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      nik: nik ?? this.nik,
-      address: address ?? this.address,
-    );
-  }
-
-  @override
-  List<Object?> get props => [
-        id,
-        name,
-        email,
-        avatarUrl,
-        gender,
-        job,
-        dateOfBirth,
-        phoneNumber,
-        nik,
-        address,
-      ];
 
   // Helper untuk konversi Gender dari/ke String (untuk JSON)
   static Gender _genderFromString(String? genderString) {
