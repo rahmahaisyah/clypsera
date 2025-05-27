@@ -60,10 +60,6 @@ class HomeController extends GetxController {
     Get.snackbar('Tapped', 'Jenis Sumbing: ${cleftType.name}');
   }
 
-  void onPatientTap(PatientModel patient) {
-    Get.snackbar('Tapped', 'Pasien: ${patient.name}');
-  }
-
   void onSeeMorePatientsTap() {
     Get.snackbar('Tapped', 'Lihat semua pasien');
   }

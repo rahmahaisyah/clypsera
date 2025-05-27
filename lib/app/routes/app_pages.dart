@@ -54,7 +54,7 @@ class AppPages {
       binding: ProfileBinding(),
     ),
     GetPage(
-      name: _Paths.DETAIL_PATIENT,
+      name: _Paths.detailPatient,
       page: () => const DetailPatientView(),
       binding: DetailPatientBinding(),
     ),
