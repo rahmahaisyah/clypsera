@@ -1,5 +1,4 @@
-// File: lib/app/modules/profile/views/profile_view.dart
-import 'package:clypsera/app/constants/uidata.dart'; // Untuk notifIcon jika AppBar sama
+import 'package:clypsera/app/constants/uidata.dart'; 
 import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,8 +30,6 @@ class ProfileView extends GetView<ProfileController> {
                 notifIcon,
                 width: 20,
                 height: 20,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.notifications_none, size: 20),
               ),
             ),
           ),
@@ -66,12 +63,10 @@ class ProfileView extends GetView<ProfileController> {
           );
         }
         if (controller.currentUser.value == null) {
-          // Ini bisa jadi state di mana user tidak login, atau error fetch yang tidak terduga
           return const Center(
               child:
                   Text('Tidak dapat memuat data profil. Silakan coba lagi.'));
         }
-
         final user = controller.currentUser.value!;
 
         return RefreshIndicator(
@@ -101,12 +96,7 @@ class ProfileView extends GetView<ProfileController> {
                   icon: Icon(Icons.logout_rounded, color: Colors.red[600]),
                   label: Text(
                     'Log Out',
-                    style: Style.textStyle?.copyWith(
-                            color: Colors.red[700],
-                            fontWeight: FontWeight.bold) ??
-                        TextStyle(
-                            color: Colors.red[700],
-                            fontWeight: FontWeight.bold),
+                    style: Style.headLineStyle21,
                   ),
                   onPressed: controller.logout,
                   style: TextButton.styleFrom(

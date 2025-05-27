@@ -15,8 +15,8 @@ class ProfileInfoCardWidget extends StatelessWidget {
   Widget _buildInfoItem(BuildContext context, {required IconData icon, required String label, required String value}) {
     // Warna ikon dan teks dari desain
     final Color iconColor = Style.primaryColor ;
-    final TextStyle labelStyle = Style.headLineStyle14;
-    final TextStyle valueStyle = Style.headLineStyle14;
+    final TextStyle labelStyle = Style.headLineStyle15;
+    final TextStyle valueStyle = Style.headLineStyle13;
 
     return Expanded(
       child: Container(
@@ -26,7 +26,7 @@ class ProfileInfoCardWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12), // Radius kartu
           boxShadow: [ // Shadow halus
             BoxShadow(
-              color: Colors.grey.withOpacity(0.08),
+              color: Colors.grey.shade200,
               spreadRadius: 1,
               blurRadius: 6,
               offset: const Offset(0, 2),
@@ -35,7 +35,7 @@ class ProfileInfoCardWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, size: 22, color: iconColor),
+            Icon(icon, size: 26, color: iconColor),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -59,7 +59,6 @@ class ProfileInfoCardWidget extends StatelessWidget {
     bool hasJob = job != null && job!.isNotEmpty;
     bool hasDob = dateOfBirth != null;
 
-    // Jangan tampilkan Row jika kedua data tidak ada
     if (!hasJob && !hasDob) {
       return const SizedBox.shrink();
     }
@@ -71,22 +70,19 @@ class ProfileInfoCardWidget extends StatelessWidget {
           if (hasJob)
             _buildInfoItem(
               context,
-              // Ikon dari desain (mirip badge/assignment/work)
-              icon: Icons.work_outline_rounded, 
+              icon: Icons.badge_outlined, 
               label: 'Pekerjaan',
               value: job!,
             ),
-          if (hasJob && hasDob) // Hanya tampilkan spasi jika kedua kartu ada
+          if (hasJob && hasDob) 
             const SizedBox(width: 12),
           if (hasDob)
             _buildInfoItem(
               context,
-              icon: Icons.calendar_today_outlined,
+              icon: Icons.calendar_month_outlined,
               label: 'Tanggal lahir',
               value: dateFormatter.format(dateOfBirth!),
             ),
-          // Jika hanya satu item yang ada, tambahkan Expanded kosong agar item tersebut tidak memenuhi layar
-          // dan tetap berada di kiri atau kanan sesuai urutan.
           if ((hasJob && !hasDob) || (!hasJob && hasDob))
             const Expanded(child: SizedBox.shrink()),
         ],

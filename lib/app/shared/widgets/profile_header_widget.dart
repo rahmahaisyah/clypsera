@@ -1,8 +1,6 @@
 import 'package:clypsera/app/data/models/user_profile_model.dart';
 import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-
 import '../../constants/uidata.dart';
 
 class ProfileHeaderWidget extends StatelessWidget {
@@ -16,67 +14,59 @@ class ProfileHeaderWidget extends StatelessWidget {
   });
 
   Widget _buildGenderIcon(Gender gender, BuildContext context) {
-  String iconAsset;
-  
-  switch (gender) {
-    case Gender.male:
-      iconAsset = genderMaleIcon;
-      break;
-    case Gender.female:
-      iconAsset = genderFemaleIcon;
-      break;
-    default:
-      return const SizedBox.shrink();
+    String iconAsset;
+    Color bgColor;
+
+    switch (gender) {
+      case Gender.male:
+        iconAsset = genderMaleIcon;
+        bgColor = Style.primaryColor;
+        break;
+      case Gender.female:
+        iconAsset = genderFemaleIcon;
+        bgColor = Style.blueColor2;
+        break;
+      default:
+        return const SizedBox.shrink();
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: bgColor,
+        shape: BoxShape.circle,
+        border: Border.all(color: Style.whiteColor),
+      ),
+      child: Image.network(iconAsset, width: 14, height: 14),
+    );
   }
-
-  return Container(
-    padding: const EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      color: Style.primaryColor,
-      shape: BoxShape.circle,
-      border: Border.all(color: Style.whiteColor),
-    ),
-    child: Image.network(iconAsset, width: 14, height: 14), 
-  );
-}
-
 
   @override
   Widget build(BuildContext context) {
-    const double avatarDiameter = 100.0; // Diameter avatar utama
-    const double genderIconDiameter = 28.0; // Diameter container ikon gender
-
-    // Style untuk nama dan email (gunakan fallback jika Style belum lengkap)
-    final TextStyle nameStyle = Style.headLineStyle14;
+    const double avatarDiameter = 100.0;
+    const double genderIconDiameter = 28.0;
+    final TextStyle nameStyle = Style.headLineStyle2;
     final TextStyle emailStyle = Style.headLineStyle14;
 
-    // Style untuk tombol Edit Profile
     final ButtonStyle editButtonStyle = ElevatedButton.styleFrom(
-      backgroundColor:
-          Style.primaryColorOp4, // Warna latar tombol (abu-abu kebiruan muda)
-      foregroundColor: Style.primaryColor, // Warna teks tombol (biru tua)
-      elevation: 0, // Tanpa shadow
-      padding: const EdgeInsets.symmetric(
-          horizontal: 40, vertical: 12), // Padding tombol
+      backgroundColor: Style.blueColor2,
+      foregroundColor: Style.whiteColor,
+      elevation: 0,
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25), // Radius tombol pill
+        borderRadius: BorderRadius.circular(25),
       ),
       textStyle: Style.headLineStyle14,
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          vertical: 24.0), // Padding atas dan bawah untuk seluruh header
+      padding: const EdgeInsets.symmetric(vertical: 24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            // Container untuk Stack avatar dan ikon gender
-            width: avatarDiameter +
-                genderIconDiameter *
-                    0.2, // Lebar disesuaikan agar ikon gender pas
-            height:
-                avatarDiameter + genderIconDiameter * 0.2, // Tinggi disesuaikan
+            width: avatarDiameter + genderIconDiameter * 0.2,
+            height: avatarDiameter + genderIconDiameter * 0.2,
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -86,7 +76,6 @@ class ProfileHeaderWidget extends StatelessWidget {
                   height: avatarDiameter,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    // Warna placeholder jika tidak ada avatarUrl (biru tua seperti di desain)
                     color: Style.primaryColor,
                     image:
                         (user.avatarUrl != null && user.avatarUrl!.isNotEmpty)
@@ -96,23 +85,20 @@ class ProfileHeaderWidget extends StatelessWidget {
                               )
                             : null,
                   ),
-                  // Ikon placeholder jika tidak ada avatarUrl
                   child: (user.avatarUrl == null || user.avatarUrl!.isEmpty)
-                      ? Icon(CupertinoIcons.person_fill,
-                          size: avatarDiameter * 0.6,
-                          color: Colors.white.withOpacity(0.9))
+                      ? Image.network(
+                          profileIcon,
+                          color: Style.whiteColor,
+                        )
                       : null,
                 ),
-                // Ikon Gender Overlay
                 Positioned(
                     bottom: 0,
                     right: 0,
                     child: SizedBox(
-                      // Beri ukuran eksplisit untuk container ikon gender
                       width: genderIconDiameter,
                       height: genderIconDiameter,
                       child: _buildGenderIcon(user.gender, context),
-
                     )),
               ],
             ),
@@ -126,7 +112,7 @@ class ProfileHeaderWidget extends StatelessWidget {
             ElevatedButton(
               onPressed: onEditProfileTap,
               style: editButtonStyle,
-              child: const Text('Edit profile'),
+              child: const Text('Edit profil'),
             )
         ],
       ),

@@ -41,11 +41,7 @@ class CleftTypesSection extends GetView<HomeController> {
         if (controller.cleftTypes.length > 4)
           Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: Divider(
-              color: Style.primaryColorOp4,
-              thickness: 4,
-              height: 4,
-            ),
+            child: Divider(color: Colors.grey[200], height: 1),
           ),
         Align(
           alignment: Alignment.center,
@@ -71,8 +67,7 @@ class CleftTypesSection extends GetView<HomeController> {
                           ? CupertinoIcons.chevron_up
                           : CupertinoIcons.chevron_down,
                       size: 18,
-                      color: Style
-                          .primaryColor, 
+                      color: Style.primaryColor,
                     ),
                   ],
                 );
