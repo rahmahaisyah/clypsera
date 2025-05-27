@@ -66,7 +66,7 @@ class LoginView extends GetView<LoginController> {
                 CustomButton(
                   text: "Masuk",
                   onTap: () {
-                    Get.offAllNamed(Routes.BOTTOMNAVIGATION);
+                    Get.offAllNamed(Routes.bottomnavigation);
                   },
                   textStyle: Style.headLineStyle6,
                   color: Style.primaryColor,
