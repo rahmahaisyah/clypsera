@@ -91,9 +91,9 @@ class ProfileView extends GetView<ProfileController> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 24.0),
+                    horizontal: 16.0),
                 child: TextButton.icon(
-                  icon: Icon(Icons.logout_rounded, color: Colors.red[600]),
+                  icon: Icon(Icons.logout_rounded, color: Style.redColor, size: 26,),
                   label: Text(
                     'Log Out',
                     style: Style.headLineStyle21,
@@ -103,7 +103,6 @@ class ProfileView extends GetView<ProfileController> {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
-                      // side: BorderSide(color: Colors.red[200]!) // Opsional: border
                     ),
                   ),
                 ),

@@ -125,8 +125,8 @@ class Style {
     fontWeight: FontWeight.bold,
   );
   static TextStyle headLineStyle21 = GoogleFonts.poppins(
-    fontSize: 12,
+    fontSize: 18,
     color: Style.redColor,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
   );
 }
