@@ -6,9 +6,9 @@ abstract class Routes {
   static const home = _Paths.home;
   static const login = _Paths.login;
   static const splashScreen = _Paths.splashScreen;
-  static const BOTTOMNAVIGATION = _Paths.BOTTOMNAVIGATION;
-  static const NEWS = _Paths.NEWS;
-  static const PROFILE = _Paths.PROFILE;
+  static const bottomnavigation = _Paths.bottomnavigation;
+  static const news = _Paths.news;
+  static const profile = _Paths.profile;
 }
 
 abstract class _Paths {
@@ -16,7 +16,7 @@ abstract class _Paths {
   static const home = '/home';
   static const login = '/login';
   static const splashScreen = '/splash-screen';
-  static const BOTTOMNAVIGATION = '/bottomnavigation';
-  static const NEWS = '/news';
-  static const PROFILE = '/profile';
+  static const bottomnavigation = '/bottomnavigation';
+  static const news = '/news';
+  static const profile = '/profile';
 }

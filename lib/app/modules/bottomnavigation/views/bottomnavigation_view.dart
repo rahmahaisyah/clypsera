@@ -7,9 +7,6 @@ class BottomnavigationView extends GetView<BottomnavigationController> {
   const BottomnavigationView({super.key});
   @override
   Widget build(BuildContext context) {
-    final Color activePillColor = Style.primaryColor;
-    final Color activeContentColor = Style.whiteColor;
-    final Color inactiveIconColor = Style.bottomNavPillColor;
     const double iconSize = 24.0;
     const double bottomNavHeight = kBottomNavigationBarHeight + 16.0;
     const Duration animationDuration = Duration(milliseconds: 300);
@@ -50,7 +47,7 @@ class BottomnavigationView extends GetView<BottomnavigationController> {
                         child: _buildIconWidget(
                           item.inactiveIconPath,
                           iconSize,
-                          inactiveIconColor,
+                          Style.bottomNavPillColor,
                         ),
                       ),
                     ),
@@ -69,7 +66,7 @@ class BottomnavigationView extends GetView<BottomnavigationController> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   decoration: BoxDecoration(
-                    color: activePillColor,
+                    color: Style.primaryColor,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Row(
@@ -82,7 +79,7 @@ class BottomnavigationView extends GetView<BottomnavigationController> {
                             .navigationItems[controller.currentIndex.value]
                             .activeIconPath,
                         iconSize,
-                        activeContentColor,
+                        Style.whiteColor,
                         isActiveIconOnPrimary: true,
                       ),
                       const SizedBox(width: 6),
@@ -92,7 +89,7 @@ class BottomnavigationView extends GetView<BottomnavigationController> {
                               .navigationItems[controller.currentIndex.value]
                               .label,
                           style: TextStyle(
-                            color: activeContentColor,
+                            color: Style.whiteColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 13,
                           ),

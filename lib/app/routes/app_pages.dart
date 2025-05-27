@@ -37,17 +37,17 @@ class AppPages {
       binding: SplashScreenBinding(),
     ),
     GetPage(
-      name: _Paths.BOTTOMNAVIGATION,
+      name: _Paths.bottomnavigation,
       page: () => const BottomnavigationView(),
       binding: BottomnavigationBinding(),
     ),
     GetPage(
-      name: _Paths.NEWS,
+      name: _Paths.news,
       page: () => const NewsView(),
       binding: NewsBinding(),
     ),
     GetPage(
-      name: _Paths.PROFILE,
+      name: _Paths.profile,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
     ),
