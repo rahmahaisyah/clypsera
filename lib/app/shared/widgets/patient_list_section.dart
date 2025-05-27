@@ -1,3 +1,4 @@
+import 'package:clypsera/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:clypsera/app/modules/home/controllers/home_controller.dart';
@@ -39,7 +40,7 @@ class PatientListSection extends GetView<HomeController> {
               final patient = controller.patients[index];
               return PatientListItem(
                 patient: patient,
-                onTap: () => controller.onPatientTap(patient),
+                onTap: () => Get.offAllNamed(Routes.detailPatient),
               );
             },
           ),

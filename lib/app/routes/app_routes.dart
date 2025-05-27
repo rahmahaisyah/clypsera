@@ -9,7 +9,7 @@ abstract class Routes {
   static const bottomnavigation = _Paths.bottomnavigation;
   static const news = _Paths.news;
   static const profile = _Paths.profile;
-  static const DETAIL_PATIENT = _Paths.DETAIL_PATIENT;
+  static const detailPatient = _Paths.detailPatient;
 }
 
 abstract class _Paths {
@@ -20,5 +20,5 @@ abstract class _Paths {
   static const bottomnavigation = '/bottomnavigation';
   static const news = '/news';
   static const profile = '/profile';
-  static const DETAIL_PATIENT = '/detail-patient';
+  static const detailPatient = '/detail-patient';
 }
