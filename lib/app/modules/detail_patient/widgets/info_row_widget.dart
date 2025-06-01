@@ -5,8 +5,8 @@ class InfoRowWidget extends StatelessWidget {
   final String label;
   final String value;
   final VoidCallback?
-      onTap; // Untuk baris yang bisa diklik (seperti "Informasi lainnya")
-  final bool isNavigation; // Untuk menampilkan ikon panah
+      onTap; 
+  final bool isNavigation; 
 
   const InfoRowWidget({
     super.key,
@@ -27,12 +27,12 @@ class InfoRowWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              flex: 2, // Beri ruang lebih untuk label jika perlu
-              child: Text(label, style: Style.headLineStyle2),
+              flex: 2, 
+              child: Text(label, style: Style.headLineStyle4),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 8),
             Expanded(
-              flex: 3, // Beri ruang lebih untuk value
+              flex: 3, 
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -40,7 +40,7 @@ class InfoRowWidget extends StatelessWidget {
                     child: Text(
                       value,
                       textAlign: TextAlign.right,
-                      style: Style.headLineStyle2,
+                      style: Style.headLineStyle5,
                     ),
                   ),
                   if (isNavigation)

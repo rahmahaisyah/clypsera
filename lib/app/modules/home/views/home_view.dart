@@ -2,10 +2,10 @@ import 'package:clypsera/app/constants/uidata.dart';
 import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../shared/widgets/cleft_types_section.dart';
+import '../widgets/cleft_types_section.dart';
 import '../../../shared/widgets/custom_search_bar.dart';
-import '../../../shared/widgets/patient_list_section.dart';
-import '../../../shared/widgets/rekomendasi_yayasan_section.dart';
+import '../widgets/patient_list_section.dart';
+import '../widgets/rekomendasi_yayasan_section.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {

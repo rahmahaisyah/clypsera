@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/uidata.dart';
-import '../../data/models/user_profile_model.dart';
-import '../theme/app_style.dart';
+import '../../../constants/uidata.dart';
+import '../../../data/models/user_profile_model.dart';
+import '../../../shared/theme/app_style.dart';
 
 class PatientAvatarWidget extends StatelessWidget {
   final String? avatarUrl;
@@ -20,15 +20,15 @@ class PatientAvatarWidget extends StatelessWidget {
 
     switch (gender) {
       case Gender.male:
-        iconAsset = genderMaleIcon; // Dari app_styles.dart
-        bgColor = Style.primaryColor; // Dari app_styles.dart
+        iconAsset = genderMaleIcon; 
+        bgColor = Style.primaryColor; 
         break;
       case Gender.female:
-        iconAsset = genderFemaleIcon; // Dari app_styles.dart
-        bgColor = Style.blueColor2; // Dari app_styles.dart
+        iconAsset = genderFemaleIcon; 
+        bgColor = Style.blueColor2; 
         break;
-      case Gender.unknown: // Menangani kasus unknown
-        return const SizedBox.shrink(); // Atau tampilkan ikon default
+      case Gender.unknown: 
+        return const SizedBox.shrink(); 
     }
 
     return Container(
@@ -39,7 +39,6 @@ class PatientAvatarWidget extends StatelessWidget {
         border: Border.all(color: Style.whiteColor),
       ),
       child: Image.network(
-        // Ganti dengan Image.asset jika ikon dari aset lokal
         iconAsset,
         width: 14,
         height: 14,
@@ -52,7 +51,6 @@ class PatientAvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Diameter diambil dari app_styles.dart
     const double avatarDiameter = 100.0;
     const double genderIconDiameter = 30.0;
 
@@ -76,7 +74,7 @@ class PatientAvatarWidget extends StatelessWidget {
                     image: (avatarUrl != null && avatarUrl!.isNotEmpty)
                         ? DecorationImage(
                             image: NetworkImage(
-                                avatarUrl!), // Ganti dengan AssetImage jika dari aset lokal
+                                avatarUrl!),
                             fit: BoxFit.cover,
                             onError: (exception, stackTrace) {
                               print('Error loading avatar: $exception');
@@ -87,8 +85,7 @@ class PatientAvatarWidget extends StatelessWidget {
                   child: (avatarUrl == null || avatarUrl!.isEmpty)
                       ? ClipOval(
                           child: Image.network(
-                            // atau Image.asset
-                            profileIcon, // Dari app_styles.dart
+                            profileIcon,
                             fit: BoxFit.cover,
                             color: Style.primaryColor.withOpacity(0.7),
                             errorBuilder: (context, error, stackTrace) => Icon(

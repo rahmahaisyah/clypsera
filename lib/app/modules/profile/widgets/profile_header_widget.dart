@@ -1,7 +1,7 @@
 import 'package:clypsera/app/data/models/user_profile_model.dart';
 import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
-import '../../constants/uidata.dart';
+import '../../../constants/uidata.dart';
 
 class ProfileHeaderWidget extends StatelessWidget {
   final UserProfileModel user;
