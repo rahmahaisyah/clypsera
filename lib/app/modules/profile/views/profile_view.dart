@@ -2,9 +2,9 @@ import 'package:clypsera/app/constants/uidata.dart';
 import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../shared/widgets/more_info_section_widget.dart';
-import '../../../shared/widgets/profile_header_widget.dart';
-import '../../../shared/widgets/profile_info_card_widget.dart';
+import '../widgets/more_info_section_widget.dart';
+import '../widgets/profile_header_widget.dart';
+import '../widgets/profile_info_card_widget.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {

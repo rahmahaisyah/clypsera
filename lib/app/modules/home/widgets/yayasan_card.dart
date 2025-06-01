@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import '../../data/models/yayasan_model.dart';
-import '../theme/app_style.dart';
+import '../../../data/models/yayasan_model.dart';
+import '../../../shared/theme/app_style.dart';
 
 class YayasanCard extends StatelessWidget {
   final YayasanModel yayasan;

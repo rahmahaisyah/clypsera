@@ -41,7 +41,7 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(widget.title, style: Style.headLineStyle2),
+                Text(widget.title, style: Style.headLineStyle13),
                 Icon(
                   widget.isExpanded ? Icons.expand_less : Icons.expand_more,
                   size: 24.0,

@@ -4,9 +4,9 @@ import 'package:intl/intl.dart';
 import '../../../data/models/user_profile_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../shared/theme/app_style.dart';
-import '../../../shared/widgets/info_row_widget.dart';
-import '../../../shared/widgets/info_section_widget.dart';
-import '../../../shared/widgets/patient_avatar_widget.dart';
+import '../widgets/info_row_widget.dart';
+import '../widgets/info_section_widget.dart';
+import '../widgets/patient_avatar_widget.dart';
 import '../controllers/detail_patient_controller.dart';
 
 class DetailPatientView extends GetView<DetailPatientController> {
@@ -54,9 +54,7 @@ class DetailPatientView extends GetView<DetailPatientController> {
         if (controller.patientData.value == null) {
           return const Center(child: Text('Data pasien tidak ditemukan.'));
         }
-
         final patient = controller.patientData.value!;
-
         return SingleChildScrollView(
           padding: EdgeInsets.all(16),
           child: Column(

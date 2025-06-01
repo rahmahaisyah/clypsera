@@ -1,7 +1,7 @@
 import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../modules/home/controllers/rekomendasi_yayasan_controller.dart';
+import '../controllers/rekomendasi_yayasan_controller.dart';
 import 'yayasan_card.dart';
 
 class RekomendasiYayasanSection extends StatelessWidget {
@@ -9,8 +9,6 @@ class RekomendasiYayasanSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Menggunakan Get.put() agar controller tersedia.
-    // Jika Anda menggunakan Bindings, Anda bisa menggunakan Get.find().
     final RekomendasiYayasanController controller =
         Get.put(RekomendasiYayasanController());
 
