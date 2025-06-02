@@ -1,3 +1,4 @@
+import 'package:clypsera/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../shared/theme/app_style.dart';
@@ -17,7 +18,7 @@ class ListPatientView extends GetView<ListPatientController> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Style.blackColor),
           onPressed: () {
-            Get.back();
+            Get.offAllNamed(Routes.bottomnavigation);
           },
         ),
         title: Text(
@@ -29,16 +30,16 @@ class ListPatientView extends GetView<ListPatientController> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0), 
+            padding: const EdgeInsets.all(16),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 CustomSearchBar(
                   controller: controller.searchController,
-                  hintText: "Nama Seseorang", 
+                  hintText: "Nama Seseorang",
                 ),
-                const SizedBox(height: 16), 
-                
+                const SizedBox(height: 16),
+
                 // Filter Bar Section
                 SizedBox(
                   height: 45, // Tinggi untuk filter bar
@@ -49,35 +50,43 @@ class ListPatientView extends GetView<ListPatientController> {
                         decoration: BoxDecoration(
                           color: Style.whiteColor,
                           borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(color: Style.greyColor2.withOpacity(0.5)),
+                          border: Border.all(
+                              color: Style.greyColor2.withOpacity(0.5)),
                         ),
                         child: IconButton(
-                          icon: Icon(Icons.filter_list_rounded, color: Style.primaryColor, size: 20),
+                          icon: Icon(Icons.filter_list_rounded,
+                              color: Style.primaryColor, size: 20),
                           onPressed: controller.openAdvancedFilter,
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                         ),
                       ),
-                      
+
                       // Daftar Kategori Filter Horizontal
                       Expanded(
                         child: Obx(() {
                           if (controller.displayedCleftTypesForFilter.isEmpty) {
-                            return const Center(child: Text('Memuat filter...'));
+                            return const Center(
+                                child: Text('Memuat filter...'));
                           }
                           return ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: controller.displayedCleftTypesForFilter.length,
+                            itemCount:
+                                controller.displayedCleftTypesForFilter.length,
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
-                              final cleftType = controller.displayedCleftTypesForFilter[index];
+                              final cleftType = controller
+                                  .displayedCleftTypesForFilter[index];
                               return Obx(() => FilterCategoryChip(
-                                label: cleftType.name,
-                                isSelected: controller.selectedCleftTypeId.value == cleftType.id,
-                                onTap: () {
-                                  controller.selectCleftTypeFilter(cleftType.id);
-                                },
-                              ));
+                                    label: cleftType.name,
+                                    isSelected:
+                                        controller.selectedCleftTypeId.value ==
+                                            cleftType.id,
+                                    onTap: () {
+                                      controller
+                                          .selectCleftTypeFilter(cleftType.id);
+                                    },
+                                  ));
                             },
                           );
                         }),
@@ -85,28 +94,33 @@ class ListPatientView extends GetView<ListPatientController> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16), 
               ],
             ),
           ),
-          
+
           // Daftar Pasien
-          Expanded(
-            child: Obx(() {
-              if (controller.isLoading.value) { 
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Expanded(
+              child: Obx(() {
+                if (controller.isLoading.value) {
                   return const Center(child: CircularProgressIndicator());
-              }
-              if (controller.filteredPatients.isEmpty && controller.searchQuery.value.isNotEmpty) {
-                return const Center(child: Text('Pasien tidak ditemukan.'));
-              }
-               if (controller.filteredPatients.isEmpty && controller.selectedCleftTypeId.value.isNotEmpty) {
-                return const Center(child: Text('Tidak ada pasien dengan kriteria ini.'));
-              }
-              return PatientListSection(
-                showHeader: false,
-                patientsToDisplay: controller.filteredPatients,
-              );
-            }),
+                }
+                if (controller.filteredPatients.isEmpty &&
+                    controller.searchQuery.value.isNotEmpty) {
+                  return const Center(child: Text('Pasien tidak ditemukan.'));
+                }
+                if (controller.filteredPatients.isEmpty &&
+                    controller.selectedCleftTypeId.value.isNotEmpty) {
+                  return const Center(
+                      child: Text('Tidak ada pasien dengan kriteria ini.'));
+                }
+                return PatientListSection(
+                  showHeader: false,
+                  patientsToDisplay: controller.filteredPatients,
+                );
+              }),
+            ),
           ),
         ],
       ),
