@@ -6,6 +6,8 @@ import '../modules/detail_patient/bindings/detail_patient_binding.dart';
 import '../modules/detail_patient/views/detail_patient_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/list_patient/bindings/list_patient_binding.dart';
+import '../modules/list_patient/views/list_patient_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/news/bindings/news_binding.dart';
@@ -57,6 +59,11 @@ class AppPages {
       name: _Paths.detailPatient,
       page: () => const DetailPatientView(),
       binding: DetailPatientBinding(),
+    ),
+    GetPage(
+      name: _Paths.listPatient,
+      page: () => const ListPatientView(),
+      binding: ListPatientBinding(),
     ),
   ];
 }
