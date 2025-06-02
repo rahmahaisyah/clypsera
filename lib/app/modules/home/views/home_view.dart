@@ -55,7 +55,8 @@ class HomeView extends GetView<HomeController> {
               const SizedBox(height: 15),
               const RekomendasiYayasanSection(),
               const SizedBox(height: 15),
-              const PatientListSection(),
+              PatientListSection(patientsToDisplay: controller.patients, // atau cukup controller.patients
+                onSeeMoreTap: controller.onSeeMorePatientsTap,),
               const SizedBox(height: 24),
             ],
           ),

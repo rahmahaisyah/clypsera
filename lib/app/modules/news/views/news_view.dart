@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:clypsera/app/constants/uidata.dart';
 import 'package:clypsera/app/shared/theme/app_style.dart';
-import '../../../shared/widgets/breaking_news_carousel.dart';
-import '../../../shared/widgets/recommendation_list_item.dart';
+import '../widgets/breaking_news_carousel.dart';
+import '../widgets/recommendation_list_item.dart';
 import '../controllers/news_controller.dart';
 
 class NewsView extends GetView<NewsController> {
@@ -112,7 +112,7 @@ class NewsView extends GetView<NewsController> {
                 return const Padding(
                   padding: EdgeInsets.symmetric(vertical: 40.0),
                   child: Center(child: Text('Tidak ada rekomendasi berita.')),
-                );
+                );  
               }
               return ListView.builder(
                 padding: const EdgeInsets.symmetric(

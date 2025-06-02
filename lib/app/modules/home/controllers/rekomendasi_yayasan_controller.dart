@@ -18,9 +18,6 @@ class RekomendasiYayasanController extends GetxController {
       // Simulasi pengambilan data dari API 
       await Future.delayed(const Duration(seconds: 1));
 
-      // Data dummy berdasarkan gambar Anda
-      // Pastikan path gambar di 'imageUrl' sesuai dengan struktur aset Anda
-      // atau ganti dengan URL jika gambar dari network.
       final List<YayasanModel> dummyData = [
         YayasanModel(
           id: '1',
