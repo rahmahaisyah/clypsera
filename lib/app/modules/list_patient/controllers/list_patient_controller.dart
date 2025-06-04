@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/uidata.dart'; // Pastikan path ini benar & berisi definisi icon
+import '../../../constants/uidata.dart'; 
 import '../../../data/models/cleft_type_model.dart';
-import '../../../data/models/patient_model.dart'; // Pastikan enum Gender ada di sini atau diimpor
+import '../../../data/models/patient_model.dart'; 
 
 class ListPatientController extends GetxController {
   final RxString searchQuery = ''.obs;
@@ -24,6 +24,7 @@ class ListPatientController extends GetxController {
 
   // Tambahkan state isLoading
   final RxBool isLoading = false.obs; // Default false, akan diubah saat memuat data
+  final CleftTypeModel _allFilterOption = CleftTypeModel(id: '', name: 'Semua', iconUrl: '');
 
   @override
   void onInit() {
@@ -102,6 +103,8 @@ class ListPatientController extends GetxController {
   }
 
   void _updateDisplayedCleftTypesForFilter() {
+    final List<CleftTypeModel> typesToDisplay = [];
+    typesToDisplay.add(_allFilterOption);
     if (showAllCleftTypesInFilter.value) {
       displayedCleftTypesForFilter.assignAll(allCleftTypes);
     } else {
@@ -110,54 +113,46 @@ class ListPatientController extends GetxController {
   }
 
   void selectCleftTypeFilter(String cleftTypeId) {
-    if (selectedCleftTypeId.value == cleftTypeId) {
-      // Opsi: Batalkan filter jika ID yang sama diklik lagi
-      // selectedCleftTypeId.value = '';
-    } else {
-      selectedCleftTypeId.value = cleftTypeId;
-    }
+    // Jika ID yang dipilih adalah ID dari _allFilterOption, maka selectedCleftTypeId akan menjadi ''
+    selectedCleftTypeId.value = cleftTypeId;
     _applyFilters();
   }
 
   void _applyFilters() {
-    // Jika proses filter dianggap sebagai operasi "loading" singkat, Anda bisa set isLoading di sini
-    // isLoading.value = true; 
-    // await Future.delayed(Duration(milliseconds: 10)); // Simulasi kerja filter
-
     List<PatientModel> tempFiltered = [];
+    final currentSearchQuery = searchQuery.value.toLowerCase();
+    final currentSelectedTypeId = selectedCleftTypeId.value;
 
-    if (searchQuery.value.isEmpty && selectedCleftTypeId.value.isEmpty) {
+    if (currentSearchQuery.isEmpty && currentSelectedTypeId.isEmpty) {
       tempFiltered.assignAll(_allPatients);
     } else {
       tempFiltered = _allPatients.where((patient) {
-        final nameMatches = patient.name.toLowerCase().contains(searchQuery.value.toLowerCase());
+        final nameMatches = patient.name.toLowerCase().contains(currentSearchQuery);
         
         bool categoryMatches = true; 
-        if (selectedCleftTypeId.value.isNotEmpty) {
-          final selectedType = allCleftTypes.firstWhereOrNull((type) => type.id == selectedCleftTypeId.value);
+        if (currentSelectedTypeId.isNotEmpty) { // Hanya filter jika ada tipe yang dipilih (bukan "Semua")
+          final selectedType = allCleftTypes.firstWhereOrNull((type) => type.id == currentSelectedTypeId);
           if (selectedType != null) {
             categoryMatches = patient.cleftDescription.toLowerCase().contains(selectedType.name.toLowerCase());
           } else {
+            // Jika selectedCleftTypeId tidak kosong tapi tidak ditemukan di allCleftTypes (seharusnya tidak terjadi jika data konsisten)
             categoryMatches = false; 
           }
         }
         
-        if (searchQuery.value.isNotEmpty && selectedCleftTypeId.value.isNotEmpty) {
+        if (currentSearchQuery.isNotEmpty && currentSelectedTypeId.isNotEmpty) {
           return nameMatches && categoryMatches;
-        } else if (searchQuery.value.isNotEmpty) {
+        } else if (currentSearchQuery.isNotEmpty) {
           return nameMatches;
-        } else if (selectedCleftTypeId.value.isNotEmpty) {
+        } else if (currentSelectedTypeId.isNotEmpty) { // Ini berarti filter kategori aktif
           return categoryMatches;
         }
-        return false; 
+        // Jika searchQuery kosong dan selectedCleftTypeId kosong, seharusnya sudah ditangani oleh kondisi pertama.
+        // Namun, untuk keamanan, jika sampai sini berarti tidak ada filter aktif.
+        return true; 
       }).toList();
     }
     filteredPatients.assignAll(tempFiltered);
-    // isLoading.value = false; // Set false setelah filter selesai
-  }
-
-  void openAdvancedFilter() {
-    Get.snackbar('Info', 'Buka Filter Lanjutan (Belum diimplementasikan)');
   }
 
   @override

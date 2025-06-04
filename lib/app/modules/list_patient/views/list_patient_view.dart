@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../shared/theme/app_style.dart';
 import '../../../shared/widgets/custom_search_bar.dart';
-import '../../home/widgets/patient_list_section.dart';
+import '../../home/widgets/patient_list_section.dart'; // Pastikan path ini benar
 import '../controllers/list_patient_controller.dart';
 import '../widgets/filter_category_chip.dart';
 
@@ -22,7 +22,7 @@ class ListPatientView extends GetView<ListPatientController> {
           },
         ),
         title: Text(
-          'Deftar Pasien',
+          'Daftar Pasien',
           style: Style.headLineStyle12,
         ),
         centerTitle: false,
@@ -30,7 +30,7 @@ class ListPatientView extends GetView<ListPatientController> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -39,45 +39,50 @@ class ListPatientView extends GetView<ListPatientController> {
                   hintText: "Nama Seseorang",
                 ),
                 const SizedBox(height: 16),
-
-                // Filter Bar Section
                 SizedBox(
                   height: 45, // Tinggi untuk filter bar
                   child: Row(
                     children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 8.0),
-                        decoration: BoxDecoration(
-                          color: Style.whiteColor,
-                          borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(
-                              color: Style.greyColor2.withOpacity(0.5)),
-                        ),
-                        child: IconButton(
-                          icon: Icon(Icons.filter_list_rounded,
-                              color: Style.primaryColor, size: 20),
-                          onPressed: controller.openAdvancedFilter,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                        ),
-                      ),
+                      // Ganti IconButton dengan FilterCategoryChip "Semua"
+                      Obx(() => FilterCategoryChip(
+                            label: "Semua",
+                            isSelected: controller.selectedCleftTypeId.value == '', // Terpilih jika tidak ada ID filter lain
+                            onTap: () {
+                              controller.selectCleftTypeFilter(''); // ID kosong untuk "Semua"
+                            },
+                          )),
+                      // Beri sedikit jarak antara chip "Semua" dan daftar kategori
+                      // const SizedBox(width: 8.0), // Opsional, jika diperlukan
 
                       // Daftar Kategori Filter Horizontal
                       Expanded(
                         child: Obx(() {
-                          if (controller.displayedCleftTypesForFilter.isEmpty) {
+                          // Filter keluar item "Semua" dari controller.displayedCleftTypesForFilter
+                          // karena sudah kita tampilkan secara manual di atas.
+                          final actualCleftTypes = controller.displayedCleftTypesForFilter
+                              .where((type) => type.id != '') // Hanya tampilkan tipe selain "Semua"
+                              .toList();
+
+                          if (actualCleftTypes.isEmpty && controller.allCleftTypes.isNotEmpty) {
+                             // Ini berarti hanya ada filter "Semua" dan tidak ada kategori lain
+                             // Anda bisa memilih untuk tidak menampilkan ListView.builder atau menampilkan pesan
+                             return const SizedBox.shrink(); // Atau widget lain jika perlu
+                          }
+                          if (controller.displayedCleftTypesForFilter.isEmpty && controller.allCleftTypes.isEmpty) {
                             return const Center(
                                 child: Text('Memuat filter...'));
                           }
+                          
                           return ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount:
-                                controller.displayedCleftTypesForFilter.length,
+                            itemCount: actualCleftTypes.length,
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
-                              final cleftType = controller
-                                  .displayedCleftTypesForFilter[index];
-                              return Obx(() => FilterCategoryChip(
+                              final cleftType = actualCleftTypes[index];
+                              // Obx di dalam itemBuilder tidak diperlukan jika Obx sudah membungkus ListView.builder
+                              // dan FilterCategoryChip sudah di-observe di level atasnya.
+                              // Namun, jika Anda ingin setiap chip bereaksi individual, bisa dipertahankan.
+                              return FilterCategoryChip( // Tidak perlu Obx lagi di sini jika ListView sudah Obx
                                     label: cleftType.name,
                                     isSelected:
                                         controller.selectedCleftTypeId.value ==
@@ -86,7 +91,7 @@ class ListPatientView extends GetView<ListPatientController> {
                                       controller
                                           .selectCleftTypeFilter(cleftType.id);
                                     },
-                                  ));
+                                  );
                             },
                           );
                         }),
@@ -97,11 +102,9 @@ class ListPatientView extends GetView<ListPatientController> {
               ],
             ),
           ),
-
-          // Daftar Pasien
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Expanded(
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               child: Obx(() {
                 if (controller.isLoading.value) {
                   return const Center(child: CircularProgressIndicator());
@@ -115,6 +118,13 @@ class ListPatientView extends GetView<ListPatientController> {
                   return const Center(
                       child: Text('Tidak ada pasien dengan kriteria ini.'));
                 }
+                if (controller.filteredPatients.isEmpty &&
+                    controller.searchQuery.value.isEmpty &&
+                    controller.selectedCleftTypeId.value.isEmpty &&
+                    !controller.isLoading.value ) {
+                       return const Center(child: Text('Belum ada data pasien.'));
+                    }
+
                 return PatientListSection(
                   showHeader: false,
                   patientsToDisplay: controller.filteredPatients,

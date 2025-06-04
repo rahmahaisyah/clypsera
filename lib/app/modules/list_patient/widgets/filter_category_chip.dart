@@ -5,7 +5,6 @@ class FilterCategoryChip extends StatelessWidget {
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
-  // Anda bisa menambahkan parameter icon jika setiap chip memiliki icon sendiri
 
   const FilterCategoryChip({
     super.key,
@@ -41,7 +40,7 @@ class FilterCategoryChip extends StatelessWidget {
           style: TextStyle(
             color: isSelected ? Style.whiteColor : Style.primaryColor, // Warna teks
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            fontSize: 13, // Sesuaikan ukuran font
+            fontSize: 13, 
           ),
         ),
       ),
