@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
-import '../../../routes/app_pages.dart';
 import '../../../shared/theme/app_style.dart';
 import '../../../shared/widgets/custom_button.dart';
 import '../../../shared/widgets/custom_textform.dart';
@@ -33,44 +30,52 @@ class LoginView extends GetView<LoginController> {
                   onChanged: (val) => controller.email.value = val,
                 ),
                 SizedBox(height: 22),
-                CustomTextform(
-                  title: "kata Sandi",
-                  textHint: "Password",
-                  obscureText: controller.isPasswordHidden.value,
-                  onChanged: (val) => controller.password.value = val,
-                  onIconTap: controller.togglePasswordVisibility,
-                ),
+                Obx(() => CustomTextform(
+                      title: "Kata Sandi",
+                      textHint: "Password",
+                      obscureText: controller.isPasswordHidden.value,
+                      onChanged: (val) => controller.password.value = val,
+                      onIconTap: controller.togglePasswordVisibility,
+                    )),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Obx(
-                      () => Checkbox(
-                        value: controller.rememberMe.value,
-                        onChanged: controller.toggleRememberMe,
-                      ),
+                    Row(
+                      children: [
+                        Obx(
+                          () => Checkbox(
+                            value: controller.rememberMe.value,
+                            onChanged: controller.toggleRememberMe,
+                          ),
+                        ),
+                        Text(
+                          "Ingat saya",
+                          style: Style.headLineStyle5,
+                        ),
+                      ],
                     ),
-                    Text(
-                      "Ingat saya",
-                      style: Style.headLineStyle5,
-                    ),
-                    SizedBox(width: 80),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: controller.goToForgotPassword,
                       child:
                           Text("Lupa kata sandi?", style: Style.headLineStyle5),
                     ),
                   ],
                 ),
                 SizedBox(height: 30),
-                CustomButton(
-                  text: "Masuk",
-                  onTap: () {
-                    Get.offAllNamed(Routes.bottomnavigation);
-                  },
-                  textStyle: Style.headLineStyle6,
-                  color: Style.primaryColor,
-                ),
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return CustomButton(
+                    text: "Masuk",
+                    onTap: controller.login,
+                    textStyle: Style.headLineStyle6,
+                    color: Style.primaryColor,
+                  );
+                }),
               ],
             ),
           ),
