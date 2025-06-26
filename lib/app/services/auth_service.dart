@@ -1,43 +1,54 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '../constants/api_url.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'api_service.dart';
 
 class AuthService {
   Future<Map<String, dynamic>> login(String email, String password) async {
-    final url = Uri.parse('$apiUrl/auth/login');
-    final headers = {
-      'Accept': 'application/json',
-    };
     try {
-      final response = await http.post(
-        url,
-        headers: headers,
-        body: {
+      final response = await ApiService.dio.post(
+        '/auth/login',
+        data: {
           'email': email,
           'password': password,
         },
       );
-      print('Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
-
       if (response.statusCode == 200) {
-        // Jika berhasil, kembalikan data JSON sebagai Map
-        return json.decode(response.body);
-      } else {
-        // Jika gagal, coba decode error message jika itu JSON
-        // Jika bukan, tampilkan pesan error umum
-        try {
-           final errorData = json.decode(response.body);
-           throw Exception(errorData['message'] ?? 'Login Gagal');
-        } catch (e) {
-          // Ini akan menangkap error jika response body adalah HTML
-          // dan json.decode di atas gagal.
-          throw Exception('Gagal memproses respons dari server. Status code: ${response.statusCode}');
+        final data = response.data;
+        // Simpan token ke shared_preferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('access_token', data['access_token']);
+        if (data['refresh_token'] != null) {
+          await prefs.setString('refresh_token', data['refresh_token']);
         }
+        return data;
+      } else {
+        throw Exception(response.data['message'] ?? 'Login gagal');
       }
+    } on DioException catch (e) {
+      throw Exception(e.response?.data['message'] ?? 'Login gagal');
     } catch (e) {
-      // Tangani error koneksi atau lainnya
-      throw Exception('Terjadi kesalahan: ${e.toString()}');
+      throw Exception('Terjadi kesalahan: $e');
+    }
+  }
+
+  Future<void> forgetPassword(String email) async {
+    try {
+      final response = await ApiService.dio.post(
+        '/auth/forgot-password',
+        data: {'email': email},
+      );
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception(
+            response.data['message'] ?? 'Gagal mengirim reset password');
+      }
+    } on DioException catch (e) {
+      print(e.response?.data);
+      throw Exception(
+          e.response?.data['message'] ?? 'Gagal mengirim reset password');
+    } catch (e) {
+      throw Exception('Terjadi kesalahan: $e');
     }
   }
 }

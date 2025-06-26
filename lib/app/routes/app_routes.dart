@@ -10,6 +10,7 @@ abstract class Routes {
   static const profile = _Paths.profile;
   static const detailPatient = _Paths.detailPatient;
   static const listPatient = _Paths.listPatient;
+  static const FORGET_PASSWORD = _Paths.FORGET_PASSWORD;
 }
 
 abstract class _Paths {
@@ -22,4 +23,5 @@ abstract class _Paths {
   static const profile = '/profile';
   static const detailPatient = '/detail-patient';
   static const listPatient = '/list-patient';
+  static const FORGET_PASSWORD = '/forget-password';
 }
