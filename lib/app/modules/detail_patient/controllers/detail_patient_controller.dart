@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import '../../../data/models/user_profile_model.dart';
+import '../../../routes/app_pages.dart';
 
 class DetailPatientController extends GetxController {
   final RxBool isLoading = true.obs;
@@ -77,11 +78,6 @@ class DetailPatientController extends GetxController {
 
   void toggleTreatmentInfoExpansion(bool isExpanded) {
     isTreatmentInfoExpanded.value = isExpanded;
-  }
-
-  void onRequestDataTapped() {
-    Get.snackbar('Info', 'Tombol "Request data" ditekan!',
-        snackPosition: SnackPosition.TOP);
   }
 
   void onOtherInfoTapped(bool isExpanded) {

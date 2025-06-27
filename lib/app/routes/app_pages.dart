@@ -16,6 +16,8 @@ import '../modules/news/bindings/news_binding.dart';
 import '../modules/news/views/news_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/request_data/bindings/request_data_binding.dart';
+import '../modules/request_data/views/request_data_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 
@@ -71,6 +73,11 @@ class AppPages {
       name: _Paths.forgetPassword,
       page: () => const ForgetPasswordView(),
       binding: ForgetPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.requestData,
+      page: () => const RequestDataView(),
+      binding: RequestDataBinding(),
     ),
   ];
 }

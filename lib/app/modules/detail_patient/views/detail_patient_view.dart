@@ -51,12 +51,12 @@ class DetailPatientView extends GetView<DetailPatientController> {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (controller.patientData.value == null) {
+        final patient = controller.patientData.value;
+        if (patient == null) {
           return const Center(child: Text('Data pasien tidak ditemukan.'));
         }
-        final patient = controller.patientData.value!;
         return SingleChildScrollView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -96,7 +96,6 @@ class DetailPatientView extends GetView<DetailPatientController> {
                     ],
                   )),
               Divider(color: Colors.grey[200], height: 1),
-              // Informasi Penyakit Section
               Obx(() => InfoSectionWidget(
                     title: 'Informasi penyakit',
                     isExpanded: controller.isDiseaseInfoExpanded.value,
@@ -109,12 +108,10 @@ class DetailPatientView extends GetView<DetailPatientController> {
                           value: patient.organizer ?? 'N/A'),
                       InfoRowWidget(
                           label: 'Tanggal upload',
-                          value: patient.uploadDate ??
-                              'N/A'), // Sesuaikan format jika ini DateTime
+                          value: patient.uploadDate ?? 'N/A'),
                     ],
                   )),
               Divider(color: Colors.grey[200], height: 1),
-              // Informasi Pengobatan Section
               Obx(() => InfoSectionWidget(
                     title: 'Informasi pengobatan',
                     isExpanded: controller.isTreatmentInfoExpanded.value,
@@ -128,29 +125,24 @@ class DetailPatientView extends GetView<DetailPatientController> {
                           value: patient.operationTechnique ?? 'N/A'),
                       InfoRowWidget(
                           label: 'Tanggal Operasi',
-                          value: patient.operationDate ??
-                              'N/A'), // Sesuaikan format jika ini DateTime
+                          value: patient.operationDate ?? 'N/A'),
                     ],
                   )),
               Divider(color: Colors.grey[200], height: 1),
-              Obx(() => InfoSectionWidget(
-                  title: 'Informasi lainnya',
-                  isExpanded: controller.isTreatmentInfoExpanded.value,
-                  onExpansionChanged: controller.onOtherInfoTapped,
-                  children: [
-                      ]       
-                    )),
-
+              InfoSectionWidget(
+                title: 'Informasi lainnya',
+                isExpanded: false,
+                onExpansionChanged: controller.onOtherInfoTapped,
+                children: const [],
+              ),
               Divider(color: Colors.grey[200], height: 1),
-              Obx(() => InfoSectionWidget(
-                  title: 'Gambar',
-                  isExpanded: controller.isTreatmentInfoExpanded.value,
-                  onExpansionChanged: controller.onImagesTapped,
-                  children: [
-                      ]       
-                    )),
+              InfoSectionWidget(
+                title: 'Gambar',
+                isExpanded: false,
+                onExpansionChanged: controller.onImagesTapped,
+                children: const [],
+              ),
               const SizedBox(height: 32),
-
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Style.primaryColor,
@@ -159,7 +151,17 @@ class DetailPatientView extends GetView<DetailPatientController> {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                 ),
-                onPressed: controller.onRequestDataTapped,
+                onPressed: () {
+                  final patient = controller.patientData.value;
+                  if (patient == null) {
+                    Get.snackbar('Error', 'Data pasien belum tersedia');
+                    return;
+                  }
+                  Get.toNamed(
+                    Routes.requestData,
+                    arguments: patient,
+                  );
+                },
                 child: Text(
                   'Request data',
                   style: TextStyle(
@@ -168,7 +170,6 @@ class DetailPatientView extends GetView<DetailPatientController> {
                       fontWeight: FontWeight.w600),
                 ),
               ),
-
               const SizedBox(height: 24),
             ],
           ),
