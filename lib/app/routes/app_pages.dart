@@ -68,7 +68,7 @@ class AppPages {
       binding: ListPatientBinding(),
     ),
     GetPage(
-      name: _Paths.FORGET_PASSWORD,
+      name: _Paths.forgetPassword,
       page: () => const ForgetPasswordView(),
       binding: ForgetPasswordBinding(),
     ),

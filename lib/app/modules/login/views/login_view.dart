@@ -11,7 +11,6 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -19,6 +18,7 @@ class LoginView extends GetView<LoginController> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 65),
                 Text(
                   "Selamat Datang!👋🏻",
                   style: Style.headLineStyle8,
@@ -78,7 +78,6 @@ class LoginView extends GetView<LoginController> {
                 }),
               ],
             ),
-          ),
         ),
       ),
     );

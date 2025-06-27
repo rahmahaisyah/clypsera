@@ -3,7 +3,11 @@ import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../routes/app_pages.dart';
+import '../../../services/auth_service.dart';
+
 class ProfileController extends GetxController {
+  final AuthService _authService = AuthService();
   final Rx<UserProfileModel?> currentUser = Rx<UserProfileModel?>(null);
   final RxBool isLoading = true.obs;
   final RxString errorMessage = ''.obs;
@@ -66,28 +70,32 @@ class ProfileController extends GetxController {
     }
     Get.snackbar(
         'Navigasi', 'Ke halaman Edit Profil (belum diimplementasikan)');
-    //Get.toNamed(Routes.EDIT_PROFILE, arguments: currentUser.value);
   }
 
   Future<void> logout() async {
     Get.defaultDialog(
-        title: "Konfirmasi Logout",
-        middleText: "Apakah Anda yakin ingin keluar?",
-        textConfirm: "Ya, Keluar",
-        textCancel: "Batal",
-        confirmTextColor: Style.whiteColor,
-        onConfirm: () async {
-          // Get.back();
-          // isLoading.value = true;
-          // await _authService.logout();
-          // isLoading.value = false;
-          // Get.offAllNamed(Routes.LOGIN);
-          Get.snackbar("Logout",
-              "Anda telah berhasil keluar (implementasi dibutuhkan).");
-          if (Get.isDialogOpen ?? false) Get.back();
-        },
-        onCancel: () {
-          if (Get.isDialogOpen ?? false) Get.back();
-        });
+      title: "Konfirmasi Logout",
+      middleText: "Apakah Anda yakin ingin keluar?",
+      textConfirm: "Ya, Keluar",
+      textCancel: "Batal",
+      confirmTextColor: Style.whiteColor,
+      onConfirm: () async {
+        try {
+          Get.back();
+          isLoading.value = true;
+          await _authService.logout();
+          isLoading.value = false;
+          Get.offAllNamed(Routes.login);
+          Get.snackbar("Logout", "Anda telah berhasil keluar.");
+        } catch (e) {
+          isLoading.value = false;
+          Get.snackbar(
+              "Logout Gagal", e.toString().replaceAll('Exception: ', ''));
+        }
+      },
+      onCancel: () {
+        if (Get.isDialogOpen ?? false) Get.back();
+      },
+    );
   }
 }

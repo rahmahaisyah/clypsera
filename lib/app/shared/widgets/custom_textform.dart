@@ -10,6 +10,7 @@ class CustomTextform extends StatelessWidget {
   final bool? obscureText;
   final void Function(String)? onChanged;
   final VoidCallback? onIconTap;
+  final TextEditingController? controller;
 
   const CustomTextform(
       {super.key,
@@ -18,7 +19,8 @@ class CustomTextform extends StatelessWidget {
       this.icon,
       this.obscureText,
       this.onChanged,
-      this.onIconTap});
+      this.onIconTap,
+      this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class CustomTextform extends StatelessWidget {
         SizedBox(
           width: Get.width,
           child: TextFormField(
+            controller: controller,
             onChanged: onChanged,
             obscureText: obscureText ?? false,
             decoration: InputDecoration(
@@ -39,14 +42,15 @@ class CustomTextform extends StatelessWidget {
               ),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              suffixIcon: icon != null
+              suffixIcon: onIconTap != null
                   ? Padding(
                       padding: const EdgeInsets.only(right: 12),
                       child: IconButton(
-                        icon: Image.asset(
-                          'assets/icons/$icon',
-                          width: 20,
-                          height: 20,
+                        icon: Icon(
+                          obscureText ?? false
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          size: 20,
                         ),
                         onPressed: onIconTap,
                       ),

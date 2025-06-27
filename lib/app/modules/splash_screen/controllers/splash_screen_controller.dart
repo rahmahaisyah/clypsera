@@ -1,23 +1,22 @@
-// ignore_for_file: unnecessary_overrides
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../routes/app_pages.dart';
 
 class SplashScreenController extends GetxController {
-  
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    _checkLoginStatus();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> _checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access_token');
+    print('TOKEN READ: $token');
+    if (token != null && token.isNotEmpty) {
+      Get.offAllNamed(Routes.bottomnavigation);
+    } else {
+      Get.offAllNamed(Routes.login);
+    }
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

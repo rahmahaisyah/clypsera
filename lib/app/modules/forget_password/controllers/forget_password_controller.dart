@@ -24,9 +24,8 @@ class ForgetPasswordController extends GetxController {
     isLoading.value = true;
     try {
       await _authService.forgetPassword(email);
-      Get.snackbar(
-          'Berhasil', 'Link reset password telah dikirim ke email Anda');
-      Get.back(); 
+      final message = await _authService.forgetPassword(email);
+      Get.snackbar('Info', message ?? 'Berhasil request reset password');
     } catch (e) {
       Get.snackbar('Gagal', e.toString().replaceAll('Exception: ', ''));
     } finally {

@@ -33,7 +33,8 @@ class LoginController extends GetxController {
 
     try {
       isLoading.value = true;
-      final responseData = await _authService.login(email.value, password.value);
+      final responseData =
+          await _authService.login(email.value, password.value);
 
       final prefs = await SharedPreferences.getInstance();
       if (rememberMe.value) {
@@ -42,7 +43,8 @@ class LoginController extends GetxController {
         await prefs.remove('remember_email');
       }
 
-      Get.snackbar('Sukses', responseData['message'] ?? 'Login berhasil!');
+      Get.snackbar('Sukses',
+          'Selamat datang, ${responseData['user']?['name'] ?? 'User'}');
       Get.offAllNamed(Routes.bottomnavigation);
     } catch (e) {
       Get.snackbar('Login Gagal', e.toString().replaceAll('Exception: ', ''));
@@ -52,7 +54,7 @@ class LoginController extends GetxController {
   }
 
   void goToForgotPassword() {
-    Get.offAllNamed(Routes.FORGET_PASSWORD);
+    Get.offAllNamed(Routes.forgetPassword);
   }
 
   void _loadRememberedEmail() async {
