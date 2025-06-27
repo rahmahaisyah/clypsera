@@ -1,3 +1,4 @@
+import 'package:clypsera/app/constants/uidata.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -8,10 +9,10 @@ class RequestDataController extends GetxController {
   final nikController = TextEditingController();
   final purposeController = TextEditingController();
 
-  final selectedCategory = 0.obs;
-  final categories = [
-    {'icon': Icons.science, 'title': 'Riset dan penelitian', 'desc': 'Lorem ipsum dolor sit amet gajnahdo kaot jak.'},
-    {'icon': Icons.business_center, 'title': 'Komersial', 'desc': 'Lorem ipsum dolor sit amet gajnahdo kaot jak.'},
+  final selectedCategory = RxnInt();
+  final categories = <Map<String, Object>> [
+    {'icon': researchIcon, 'title': 'Riset dan penelitian', 'desc': 'Lorem ipsum dolor sit amet gajnahdo kaot jak.'},
+    {'icon': commercialIcon, 'title': 'Komersial', 'desc': 'Lorem ipsum dolor sit amet gajnahdo kaot jak.'},
   ];
 
   @override

@@ -28,3 +28,7 @@ const String profileIcon =
     "https://res.cloudinary.com/dg9ol2bdm/image/upload/v1747751058/Vector_7_omq0wj.png";
 const String noImage =
     'https://res.cloudinary.com/dg9ol2bdm/image/upload/v1748324195/noImage_hec1of.jpg';
+const String researchIcon =
+    'https://res.cloudinary.com/dg9ol2bdm/image/upload/v1751017248/Frame_8291_olwxzi.png';
+const String commercialIcon =
+    'https://res.cloudinary.com/dg9ol2bdm/image/upload/v1751017248/Frame_8291_1_oxasri.png';

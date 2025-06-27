@@ -85,23 +85,23 @@ class RequestDataView extends GetView<RequestDataController> {
             const SizedBox(height: 24),
             Text('Kategori pengajuan', style: Style.headLineStyle5),
             const SizedBox(height: 12),
-            SizedBox(
-              height: 120,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: controller.categories.length,
-                itemBuilder: (context, i) {
-                  final cat = controller.categories[i];
-                  return CategoryCard(
-                    icon: cat['icon'] as IconData,
-                    title: cat['title'] as String,
-                    desc: cat['desc'] as String,
-                    selected: controller.selectedCategory.value == i,
-                    onTap: () => controller.selectedCategory.value = i,
-                  );
-                },
-              ),
-            ),
+            Obx(() => SizedBox(
+                  height: null, // biarkan tinggi menyesuaikan
+                  child: Row(
+                    children: List.generate(controller.categories.length, (i) {
+                      final cat = controller.categories[i];
+                      return Expanded(
+                        child: CategoryCard(
+                          icon: cat['icon'] as String,
+                          title: cat['title'] as String,
+                          desc: cat['desc'] as String,
+                          selected: controller.selectedCategory.value == i,
+                          onTap: () => controller.selectedCategory.value = i,
+                        ),
+                      );
+                    }),
+                  ),
+                )),
             const SizedBox(height: 16),
             CustomTextform(
               title: 'Tujuan penggunaan data',
