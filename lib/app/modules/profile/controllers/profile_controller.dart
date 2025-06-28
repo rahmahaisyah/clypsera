@@ -2,7 +2,6 @@ import 'package:clypsera/app/data/models/user_profile_model.dart';
 import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import '../../../routes/app_pages.dart';
 import '../../../services/auth_service.dart';
 
@@ -64,12 +63,7 @@ class ProfileController extends GetxController {
   }
 
   void navigateToEditProfile() {
-    if (currentUser.value == null) {
-      Get.snackbar('Error', 'Data profil belum dimuat.');
-      return;
-    }
-    Get.snackbar(
-        'Navigasi', 'Ke halaman Edit Profil (belum diimplementasikan)');
+    Get.toNamed(Routes.EDIT_PROFILE);
   }
 
   Future<void> logout() async {

@@ -77,13 +77,12 @@ class ProfileHeaderWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Style.primaryColor,
-                    image:
-                        (user.avatarUrl != null && user.avatarUrl!.isNotEmpty)
-                            ? DecorationImage(
-                                image: NetworkImage(user.avatarUrl!),
-                                fit: BoxFit.cover,
-                              )
-                            : null,
+                    image: (user.avatarUrl?.isNotEmpty ?? false)
+                        ? DecorationImage(
+                            image: NetworkImage(user.avatarUrl!),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
                   child: (user.avatarUrl == null || user.avatarUrl!.isEmpty)
                       ? Image.network(
@@ -93,20 +92,22 @@ class ProfileHeaderWidget extends StatelessWidget {
                       : null,
                 ),
                 Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: SizedBox(
-                      width: genderIconDiameter,
-                      height: genderIconDiameter,
-                      child: _buildGenderIcon(user.gender, context),
-                    )),
+                  bottom: 0,
+                  right: 0,
+                  child: SizedBox(
+                    width: genderIconDiameter,
+                    height: genderIconDiameter,
+                    child: _buildGenderIcon(user.gender, context),
+                  ),
+                ),
               ],
             ),
           ),
           const SizedBox(height: 16),
           Text(user.name, style: nameStyle, textAlign: TextAlign.center),
           const SizedBox(height: 4),
-          Text(user.email, style: emailStyle, textAlign: TextAlign.center),
+          Text(user.email,
+              style: emailStyle, textAlign: TextAlign.center),
           const SizedBox(height: 20),
           if (onEditProfileTap != null)
             ElevatedButton(

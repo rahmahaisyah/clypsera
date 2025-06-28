@@ -23,13 +23,18 @@ class ForgetPasswordController extends GetxController {
 
     isLoading.value = true;
     try {
-      await _authService.forgetPassword(email);
       final message = await _authService.forgetPassword(email);
-      Get.snackbar('Info', message ?? 'Berhasil request reset password');
+      if (Get.isRegistered<ForgetPasswordController>()) {
+        Get.snackbar('Info', message ?? 'Berhasil request reset password');
+      }
     } catch (e) {
-      Get.snackbar('Gagal', e.toString().replaceAll('Exception: ', ''));
+      if (Get.isRegistered<ForgetPasswordController>()) {
+        Get.snackbar('Gagal', e.toString().replaceAll('Exception: ', ''));
+      }
     } finally {
-      isLoading.value = false;
+      if (Get.isRegistered<ForgetPasswordController>()) {
+        isLoading.value = false;
+      }
     }
   }
 }

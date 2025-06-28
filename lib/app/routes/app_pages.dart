@@ -4,6 +4,8 @@ import '../modules/bottomnavigation/bindings/bottomnavigation_binding.dart';
 import '../modules/bottomnavigation/views/bottomnavigation_view.dart';
 import '../modules/detail_patient/bindings/detail_patient_binding.dart';
 import '../modules/detail_patient/views/detail_patient_view.dart';
+import '../modules/edit_profile/bindings/edit_profile_binding.dart';
+import '../modules/edit_profile/views/edit_profile_view.dart';
 import '../modules/forget_password/bindings/forget_password_binding.dart';
 import '../modules/forget_password/views/forget_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -85,6 +87,11 @@ class AppPages {
       name: _Paths.notification,
       page: () => const NotificationView(),
       binding: NotificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_PROFILE,
+      page: () => const EditProfileView(),
+      binding: EditProfileBinding(),
     ),
   ];
 }

@@ -1,6 +1,6 @@
 enum Gender { male, female, unknown }
 
-class UserProfileModel  {
+class UserProfileModel {
   final String id;
   final String name;
   final String email;
@@ -12,7 +12,7 @@ class UserProfileModel  {
   final String? nik;
   final String? address;
   final String? type;
-  final String? organizer; 
+  final String? organizer;
   final String? uploadDate;
   final String? operationLocation;
   final String? operationTechnique;
@@ -37,12 +37,11 @@ class UserProfileModel  {
     this.operationDate,
   });
 
-  // Factory constructor untuk membuat instance dari JSON (data dari API)
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
       id: json['id'] as String,
-      name: json['name'] as String,
-      email: json['email'] as String,
+      name: json['name'] as String? ?? '',
+      email: json['email'] as String? ?? '',
       avatarUrl: json['avatarUrl'] as String?,
       gender: _genderFromString(json['gender'] as String?),
       job: json['job'] as String?,
@@ -52,7 +51,7 @@ class UserProfileModel  {
       phoneNumber: json['phoneNumber'] as String?,
       nik: json['nik'] as String?,
       address: json['address'] as String?,
-      type: json['type'] as String? ?? 'N/A', // atau json['cleftDescription']
+      type: json['type'] as String? ?? 'N/A',
       organizer: json['organizer'] as String? ?? 'N/A',
       uploadDate: json['uploadDate'] as String? ?? 'N/A',
       operationLocation: json['operationLocation'] as String? ?? 'N/A',
