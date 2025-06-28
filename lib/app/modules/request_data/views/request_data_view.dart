@@ -5,6 +5,7 @@ import '../../../shared/widgets/custom_button.dart';
 import '../../../shared/theme/app_style.dart';
 import '../controllers/request_data_controller.dart';
 import '../widgets/category_card.dart';
+import '../widgets/request_dialog.dart';
 
 class RequestDataView extends GetView<RequestDataController> {
   const RequestDataView({super.key});
@@ -112,7 +113,10 @@ class RequestDataView extends GetView<RequestDataController> {
             CustomButton(
               text: 'Ajukan data',
               onTap: () {
-                // TODO: Implement submit logic
+                showDialog(
+                  context: context,
+                  builder: (_) => const RequestDialog(),
+                );
               },
               color: Style.primaryColor,
               textStyle: Style.headLineStyle6.copyWith(color: Colors.white),
