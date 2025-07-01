@@ -7,20 +7,18 @@ import '../../../data/models/patient_model.dart';
 
 class PatientListSection extends StatelessWidget {
   final bool showHeader;
-  final List<PatientModel>? patientsToDisplay;
+  final RxList<PatientModel> patientsToDisplay;
   final VoidCallback? onSeeMoreTap;
 
   const PatientListSection({
     super.key,
     this.showHeader = true,
-    this.patientsToDisplay,
+    required this.patientsToDisplay,
     this.onSeeMoreTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final List<PatientModel>? currentPatients = patientsToDisplay;
-
     Widget header() => Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -39,66 +37,48 @@ class PatientListSection extends StatelessWidget {
           ],
         );
 
-    // Loading/null state
-    if (currentPatients == null) {
+    return Obx(() {
+      final currentPatients = patientsToDisplay;
+
+      if (currentPatients.isEmpty) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (showHeader) header(),
+            if (showHeader) const SizedBox(height: 8),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: Center(
+                child: Text(
+                  'Tidak ada data pasien.',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+            ),
+          ],
+        );
+      }
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (showHeader) header(),
           if (showHeader) const SizedBox(height: 8),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: Center(
-              child: Text(
-                'Memuat data pasien...',
-                style: TextStyle(color: Colors.grey),
-              ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: currentPatients.length,
+              itemBuilder: (context, index) {
+                final patient = currentPatients[index];
+                return PatientListItem(
+                  patient: patient,
+                  onTap: () =>
+                      Get.toNamed(Routes.detailPatient, arguments: patient.id),
+                );
+              },
             ),
           ),
         ],
       );
-    }
-
-    // Empty state
-    if (currentPatients.isEmpty) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (showHeader) header(),
-          if (showHeader) const SizedBox(height: 8),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: Center(
-              child: Text(
-                'Tidak ada data pasien.',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
-    // Data state
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (showHeader) header(),
-        if (showHeader) const SizedBox(height: 8),
-        ListView.builder(
-          itemCount: currentPatients.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            final patient = currentPatients[index];
-            return PatientListItem(
-              patient: patient,
-              onTap: () =>
-                  Get.toNamed(Routes.detailPatient, arguments: patient.id),
-            );
-          },
-        ),
-      ],
-    );
+    });
   }
 }

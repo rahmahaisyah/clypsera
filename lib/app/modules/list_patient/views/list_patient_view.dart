@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../shared/theme/app_style.dart';
 import '../../../shared/widgets/custom_search_bar.dart';
-import '../../home/widgets/patient_list_section.dart'; 
+import '../../home/widgets/patient_list_section.dart';
 import '../controllers/list_patient_controller.dart';
 import '../widgets/filter_category_chip.dart';
 
@@ -46,22 +46,27 @@ class ListPatientView extends GetView<ListPatientController> {
                     children: [
                       Obx(() => FilterCategoryChip(
                             label: "Semua",
-                            isSelected: controller.selectedCleftTypeId.value == '',
+                            isSelected:
+                                controller.selectedCleftTypeId.value == '',
                             onTap: () {
                               controller.selectCleftTypeFilter('');
                             },
                           )),
                       Expanded(
                         child: Obx(() {
-                          final actualCleftTypes = controller.displayedCleftTypesForFilter
+                          final actualCleftTypes = controller
+                              .displayedCleftTypesForFilter
                               .where((type) => type.id != '')
                               .toList();
 
-                          if (actualCleftTypes.isEmpty && controller.allCleftTypes.isNotEmpty) {
+                          if (actualCleftTypes.isEmpty &&
+                              controller.allCleftTypes.isNotEmpty) {
                             return const SizedBox.shrink();
                           }
-                          if (controller.displayedCleftTypesForFilter.isEmpty && controller.allCleftTypes.isEmpty) {
-                            return const Center(child: Text('Memuat filter...'));
+                          if (controller.displayedCleftTypesForFilter.isEmpty &&
+                              controller.allCleftTypes.isEmpty) {
+                            return const Center(
+                                child: Text('Memuat filter...'));
                           }
                           return ListView.builder(
                             scrollDirection: Axis.horizontal,
@@ -71,9 +76,12 @@ class ListPatientView extends GetView<ListPatientController> {
                               final cleftType = actualCleftTypes[index];
                               return FilterCategoryChip(
                                 label: cleftType.name,
-                                isSelected: controller.selectedCleftTypeId.value == cleftType.id,
+                                isSelected:
+                                    controller.selectedCleftTypeId.value ==
+                                        cleftType.id,
                                 onTap: () {
-                                  controller.selectCleftTypeFilter(cleftType.id);
+                                  controller
+                                      .selectCleftTypeFilter(cleftType.id);
                                 },
                               );
                             },
@@ -88,25 +96,12 @@ class ListPatientView extends GetView<ListPatientController> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              child: Obx(() {
-                if (controller.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (controller.isEmptySearch) {
-                  return const Center(child: Text('Pasien tidak ditemukan.'));
-                }
-                if (controller.isEmptyFilter) {
-                  return const Center(child: Text('Tidak ada pasien dengan kriteria ini.'));
-                }
-                if (controller.isEmptyAll) {
-                  return const Center(child: Text('Belum ada data pasien.'));
-                }
-                return PatientListSection(
-                  showHeader: false,
-                  patientsToDisplay: controller.filteredPatients,
-                );
-              }),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+              child: PatientListSection(
+                showHeader: false,
+                patientsToDisplay: controller.filteredPatients,
+              ),
             ),
           ),
         ],

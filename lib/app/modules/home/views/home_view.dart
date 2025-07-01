@@ -28,10 +28,10 @@ class HomeView extends GetView<HomeController> {
               const SizedBox(height: 15),
               const RekomendasiYayasanSection(),
               const SizedBox(height: 15),
-              Obx(() => PatientListSection(
-                    patientsToDisplay: controller.patients.toList(),
-                    onSeeMoreTap: controller.onSeeMorePatientsTap,
-                  )),
+              PatientListSection(
+                patientsToDisplay: controller.patients,
+                onSeeMoreTap: controller.onSeeMorePatientsTap,
+              ),
               const SizedBox(height: 24),
             ],
           ),
