@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../constants/uidata.dart';
 import '../../../data/models/cleft_type_model.dart';
 import '../../../data/models/patient_model.dart';
+import '../../../services/core/patient_service.dart';
 
 class ListPatientController extends GetxController {
   final RxString searchQuery = ''.obs;
@@ -16,27 +17,32 @@ class ListPatientController extends GetxController {
       <CleftTypeModel>[].obs;
   final RxBool showAllCleftTypesInFilter = true.obs;
   final RxBool isLoading = false.obs;
-  final CleftTypeModel _allFilterOption =
-      CleftTypeModel(id: '', name: 'Semua', iconUrl: '');
 
   @override
   void onInit() {
     super.onInit();
-    _performInitialLoad();
+    fetchPatients();
     searchController.addListener(() {
       searchQuery.value = searchController.text;
       _applyFilters();
     });
+    _loadInitialCleftTypes();
   }
 
-  Future<void> _performInitialLoad() async {
+  Future<void> fetchPatients() async {
     isLoading.value = true;
-    _loadInitialData();
-    _applyFilters();
-    isLoading.value = false;
+    try {
+      final patients = await PatientService.fetchPatients();
+      _allPatients.assignAll(patients);
+      _applyFilters();
+    } catch (e) {
+      Get.snackbar('Error', 'Gagal mengambil data pasien');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  void _loadInitialData() {
+  void _loadInitialCleftTypes() {
     allCleftTypes.assignAll([
       CleftTypeModel(id: '1', name: 'Unilateral', iconUrl: unilateralIcon),
       CleftTypeModel(id: '2', name: 'Bilateral', iconUrl: bilateralIcon),
@@ -48,50 +54,9 @@ class ListPatientController extends GetxController {
       CleftTypeModel(id: '6', name: 'Submucous', iconUrl: notifIcon),
     ]);
     _updateDisplayedCleftTypesForFilter();
-
-    _allPatients.assignAll([
-      PatientModel(
-          id: 'p1',
-          name: 'Nama Cewe A',
-          gender: Gender.female,
-          cleftDescription: 'Unilateral cleft anatomy',
-          date: '4 June'),
-      PatientModel(
-          id: 'p2',
-          name: 'Nama Pria B',
-          gender: Gender.male,
-          cleftDescription: 'Bilateral cleft anatomy',
-          date: '22 June'),
-      PatientModel(
-          id: 'p3',
-          name: 'Nama Cewe C',
-          gender: Gender.female,
-          cleftDescription: 'Bilateral cleft anatomy',
-          date: '4 June'),
-      PatientModel(
-          id: 'p4',
-          name: 'Nama Cowo D',
-          gender: Gender.male,
-          cleftDescription: 'Palate anatomy',
-          date: '22 June'),
-      PatientModel(
-          id: 'p5',
-          name: 'Nama Cewe E',
-          gender: Gender.female,
-          cleftDescription: 'Unilateral cleft anatomy',
-          date: '14 July'),
-      PatientModel(
-          id: 'p6',
-          name: 'Nama Pria F',
-          gender: Gender.male,
-          cleftDescription: 'Syndromic',
-          date: '28 July'),
-    ]);
   }
 
   void _updateDisplayedCleftTypesForFilter() {
-    final List<CleftTypeModel> typesToDisplay = [];
-    typesToDisplay.add(_allFilterOption);
     if (showAllCleftTypesInFilter.value) {
       displayedCleftTypesForFilter.assignAll(allCleftTypes);
     } else {
@@ -141,6 +106,20 @@ class ListPatientController extends GetxController {
     }
     filteredPatients.assignAll(tempFiltered);
   }
+
+  bool get isEmptySearch =>
+      filteredPatients.isEmpty && searchQuery.value.isNotEmpty;
+
+  bool get isEmptyFilter =>
+      filteredPatients.isEmpty &&
+      selectedCleftTypeId.value.isNotEmpty &&
+      searchQuery.value.isEmpty;
+
+  bool get isEmptyAll =>
+      filteredPatients.isEmpty &&
+      searchQuery.value.isEmpty &&
+      selectedCleftTypeId.value.isEmpty &&
+      !isLoading.value;
 
   @override
   void onClose() {

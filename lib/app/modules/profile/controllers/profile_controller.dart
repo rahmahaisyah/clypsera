@@ -63,7 +63,7 @@ class ProfileController extends GetxController {
   }
 
   void navigateToEditProfile() {
-    Get.toNamed(Routes.EDIT_PROFILE);
+    Get.toNamed(Routes.editProfile);
   }
 
   Future<void> logout() async {

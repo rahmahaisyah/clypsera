@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:clypsera/app/data/models/patient_model.dart'; // Pastikan enum Gender ada di sini
+import 'package:clypsera/app/data/models/patient_model.dart';
 import 'package:clypsera/app/shared/theme/app_style.dart';
-import 'package:clypsera/app/constants/uidata.dart'; // Pastikan genderFemaleIcon dan genderMaleIcon didefinisikan di sini
+import 'package:clypsera/app/constants/uidata.dart';
 
 class PatientListItem extends StatelessWidget {
   final PatientModel patient;
@@ -14,28 +14,26 @@ class PatientListItem extends StatelessWidget {
   });
 
   Map<String, dynamic> _getGenderIconData(Gender gender) {
-    String iconUrl;
-    Color iconContainerColor; // Mengganti nama variabel agar lebih jelas (warna background container ikon)
-
     switch (gender) {
       case Gender.female:
-        iconUrl = genderFemaleIcon; // Dari uidata.dart
-        iconContainerColor = Style.blueColor2; // Warna background untuk Female
-        break; // <-- BREAK YANG HILANG DITAMBAHKAN DI SINI
-      case Gender.male:
-        iconUrl = genderMaleIcon; // Dari uidata.dart
-        iconContainerColor = Style.primaryColor; // Warna background untuk Male
-        break;
-      default: // Untuk Gender.unknown atau kasus lainnya
-        // Jika Gender.unknown, kita akan menampilkan ikon placeholder
         return {
-          'isIconData': true, // Flag untuk membedakan antara IconData dan URL
-          'iconData': Icons.person_outline_rounded, // Menggunakan IconData
-          'color': Colors.grey.shade400 // Warna background untuk Unknown
+          'isIconData': false,
+          'url': genderFemaleIcon,
+          'color': Style.blueColor2,
+        };
+      case Gender.male:
+        return {
+          'isIconData': false,
+          'url': genderMaleIcon,
+          'color': Style.primaryColor,
+        };
+      default:
+        return {
+          'isIconData': true,
+          'iconData': Icons.person_outline_rounded,
+          'color': Colors.grey.shade400,
         };
     }
-    // Mengembalikan URL dan warna background container jika Male atau Female
-    return {'isIconData': false, 'url': iconUrl, 'color': iconContainerColor};
   }
 
   @override
@@ -44,12 +42,11 @@ class PatientListItem extends StatelessWidget {
     final Color avatarCircleBackgroundColor = Colors.grey.shade200;
     const double avatarCircleDiameter = 52.0;
     const double genderIconContainerDiameter = 28.0;
-    const double genderIconSize = 16.0; // Ukuran untuk ikon di dalam container
+    const double genderIconSize = 16.0;
 
     final genderData = _getGenderIconData(patient.gender);
     final bool useIconData = genderData['isIconData'] as bool;
 
-    // Style teks
     final TextStyle patientNameStyle = Style.headLineStyle9;
     final TextStyle patientDetailStyle = Style.headLineStyle15;
 
@@ -74,50 +71,50 @@ class PatientListItem extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.centerLeft,
                   children: [
-                    Container( // Avatar placeholder
+                    Container(
                       width: avatarCircleDiameter,
                       height: avatarCircleDiameter,
                       decoration: BoxDecoration(
                         color: avatarCircleBackgroundColor,
                         shape: BoxShape.circle,
-                        // Anda bisa menambahkan gambar avatar pasien di sini jika ada
-                        // image: patient.avatarUrl != null ? DecorationImage(image: NetworkImage(patient.avatarUrl!), fit: BoxFit.cover) : null,
                       ),
-                      // child: patient.avatarUrl == null ? Icon(Icons.person, color: Colors.grey.shade400, size: 30) : null, // Placeholder jika tidak ada avatar
                     ),
                     Positioned(
                       right: 0,
-                      bottom: 0, // Sesuaikan posisi jika perlu, gambar Anda menunjukkan sedikit ke atas
+                      bottom: 0,
                       child: Container(
                         width: genderIconContainerDiameter,
                         height: genderIconContainerDiameter,
                         decoration: BoxDecoration(
-                            color: genderData['color'] as Color,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: cardBackgroundColor, // Border putih seperti di gambar
-                                width: 2.0),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.15),
-                                  blurRadius: 3,
-                                  offset: const Offset(1, 1))
-                            ]),
+                          color: genderData['color'] as Color,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: cardBackgroundColor,
+                            width: 2.0,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              blurRadius: 3,
+                              offset: const Offset(1, 1),
+                            )
+                          ],
+                        ),
                         child: Center(
                           child: useIconData
-                              ? Icon( // Untuk Gender.unknown
+                              ? Icon(
                                   genderData['iconData'] as IconData,
-                                  color: Colors.white, // Ikon putih di atas background berwarna
-                                  size: genderIconSize)
-                              : Image.network( // Untuk Gender.male/female
+                                  color: Colors.white,
+                                  size: genderIconSize,
+                                )
+                              : Image.network(
                                   genderData['url'] as String,
                                   width: genderIconSize,
                                   height: genderIconSize,
-                                  color: Colors.white, // Penting: membuat gambar ikon menjadi putih
+                                  color: Colors.white,
                                   fit: BoxFit.contain,
-                                  // Error builder jika URL gambar gagal dimuat
                                   errorBuilder: (context, error, stackTrace) =>
-                                      Icon(Icons.help_outline, // Ikon placeholder jika gambar error
+                                      Icon(Icons.help_outline,
                                           size: genderIconSize,
                                           color: Colors.white),
                                 ),
@@ -151,8 +148,11 @@ class PatientListItem extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                patient.date, // Asumsi patient.date adalah string tanggal yang sudah diformat
-                style: patientDetailStyle.copyWith(fontSize: 11, color: Style.greyColor2), // Sedikit lebih kecil dan abu-abu
+                patient.date,
+                style: patientDetailStyle.copyWith(
+                  fontSize: 11,
+                  color: Style.greyColor2,
+                ),
               ),
             ],
           ),

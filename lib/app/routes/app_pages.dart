@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../modules/bottomnavigation/bindings/bottomnavigation_binding.dart';
 import '../modules/bottomnavigation/views/bottomnavigation_view.dart';
 import '../modules/detail_patient/bindings/detail_patient_binding.dart';
@@ -24,7 +23,6 @@ import '../modules/request_data/bindings/request_data_binding.dart';
 import '../modules/request_data/views/request_data_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
-
 part 'app_routes.dart';
 
 class AppPages {
@@ -89,7 +87,7 @@ class AppPages {
       binding: NotificationBinding(),
     ),
     GetPage(
-      name: _Paths.EDIT_PROFILE,
+      name: _Paths.editProfile,
       page: () => const EditProfileView(),
       binding: EditProfileBinding(),
     ),

@@ -53,6 +53,7 @@ class AuthService {
       throw Exception('Terjadi kesalahan: $e');
     }
   }
+
   Future<void> logout() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -71,5 +72,10 @@ class AuthService {
     } catch (e) {
       throw Exception('Terjadi kesalahan: $e');
     }
+  }
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('access_token');
   }
 }

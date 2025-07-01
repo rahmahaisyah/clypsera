@@ -4,6 +4,7 @@ import 'package:clypsera/app/constants/uidata.dart';
 import 'package:clypsera/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../services/core/patient_service.dart';
 
 class HomeController extends GetxController {
   final RxString searchQuery = ''.obs;
@@ -14,17 +15,20 @@ class HomeController extends GetxController {
   final RxBool showAllCleftTypes = false.obs;
 
   final RxList<PatientModel> patients = <PatientModel>[].obs;
+  final RxBool isLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+    print('HomeController onInit called');
     _loadInitialData();
     searchController.addListener(() {
       searchQuery.value = searchController.text;
     });
   }
 
-  void _loadInitialData() {
+  Future<void> _loadInitialData() async {
+    print('Mulai load data pasien...');
     cleftTypes.assignAll([
       CleftTypeModel(id: '1', name: 'Unilateral', iconUrl: unilateralIcon),
       CleftTypeModel(id: '2', name: 'Bilateral', iconUrl: bilateralIcon),
@@ -37,38 +41,17 @@ class HomeController extends GetxController {
     ]);
     _updateDisplayedCleftTypes();
 
-    patients.assignAll([
-      PatientModel(
-          id: 'p1',
-          name: 'Nama Cewe',
-          gender: Gender.female,
-          cleftDescription: 'Unilateral cleft anatomy',
-          date: '4 June'),
-      PatientModel(
-          id: 'p2',
-          name: 'Nama Pria',
-          gender: Gender.male,
-          cleftDescription: 'Bilateral cleft anatomy',
-          date: '22 June'),
-      PatientModel(
-          id: 'p3',
-          name: 'Nama Cewe',
-          gender: Gender.female,
-          cleftDescription: 'Bilateral cleft anatomy',
-          date: '4 June'),
-      PatientModel(
-          id: 'p4',
-          name: 'Nama Cowo',
-          gender: Gender.male,
-          cleftDescription: 'Palate anatomy',
-          date: '22 June'),
-      PatientModel(
-          id: 'p5',
-          name: 'Nama Cewe',
-          gender: Gender.female,
-          cleftDescription: 'Bilateral cleft anatomy',
-          date: '4 June'),
-    ]);
+    isLoading.value = true;
+    try {
+      final fetchedPatients = await PatientService.fetchPatients();
+      print('Fetched patients: ${fetchedPatients.length}');
+      patients.assignAll(fetchedPatients.take(5).toList());
+    } catch (e) {
+      print('Error saat fetchPatients: $e');
+      Get.snackbar('Error', 'Gagal mengambil data pasien');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void _updateDisplayedCleftTypes() {

@@ -13,7 +13,7 @@ abstract class Routes {
   static const forgetPassword = _Paths.forgetPassword;
   static const requestData = _Paths.requestData;
   static const notification = _Paths.notification;
-  static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
+  static const editProfile = _Paths.editProfile;
 }
 
 abstract class _Paths {
@@ -29,5 +29,5 @@ abstract class _Paths {
   static const forgetPassword = '/forget-password';
   static const requestData = '/request-data';
   static const notification = '/notification';
-  static const EDIT_PROFILE = '/edit-profile';
+  static const editProfile = '/edit-profile';
 }
