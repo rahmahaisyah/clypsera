@@ -4,6 +4,7 @@ import 'package:clypsera/app/constants/uidata.dart';
 import 'package:clypsera/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../services/auth_service.dart';
 import '../../../services/core/patient_service.dart';
 
 class HomeController extends GetxController {
@@ -16,6 +17,7 @@ class HomeController extends GetxController {
 
   final RxList<PatientModel> patients = <PatientModel>[].obs;
   final RxBool isLoading = false.obs;
+  final RxString errorMessage = ''.obs;
 
   @override
   void onInit() {
@@ -28,7 +30,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> _loadInitialData() async {
-    print('Mulai load data pasien...');
+    print('Mulai load data...');
     cleftTypes.assignAll([
       CleftTypeModel(id: '1', name: 'Unilateral', iconUrl: unilateralIcon),
       CleftTypeModel(id: '2', name: 'Bilateral', iconUrl: bilateralIcon),
@@ -41,14 +43,36 @@ class HomeController extends GetxController {
     ]);
     _updateDisplayedCleftTypes();
 
+    await fetchPatients();
+  }
+
+  Future<void> fetchPatients() async {
     isLoading.value = true;
+    errorMessage.value = '';
+
     try {
+      final authService = AuthService();
+      final token = await authService.getToken();
+
+      if (token == null || token.isEmpty) {
+        throw Exception('Token tidak ditemukan. Silakan login kembali.');
+      }
+
+      print('Fetching patients...');
       final fetchedPatients = await PatientService.fetchPatients();
       print('Fetched patients: ${fetchedPatients.length}');
-      patients.assignAll(fetchedPatients.take(5).toList());
+
+      if (fetchedPatients.isNotEmpty) {
+        patients.assignAll(fetchedPatients.take(5).toList());
+        errorMessage.value = '';
+      } else {
+        patients.clear();
+        errorMessage.value = 'Tidak ada data pasien.';
+      }
     } catch (e) {
       print('Error saat fetchPatients: $e');
-      Get.snackbar('Error', 'Gagal mengambil data pasien');
+      patients.clear();
+      errorMessage.value = e.toString();
     } finally {
       isLoading.value = false;
     }
@@ -77,6 +101,10 @@ class HomeController extends GetxController {
 
   void onNotificationTap() {
     Get.snackbar('Tapped', 'Notifikasi');
+  }
+
+  void retryFetchPatients() {
+    fetchPatients();
   }
 
   @override

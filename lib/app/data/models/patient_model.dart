@@ -28,21 +28,15 @@ class PatientModel {
         gender = Gender.unknown;
     }
 
-    String cleftDesc = '';
-    if (json['operasi'] != null &&
-        json['operasi']['jenis_kelainan'] != null &&
-        json['operasi']['jenis_kelainan']['nama_kelainan'] != null) {
-      cleftDesc = json['operasi']['jenis_kelainan']['nama_kelainan'];
-    } else {
-      cleftDesc = '-';
-    }
+    // Ambil nama kelainan dari operasi jika ada, jika tidak fallback ke kelainan_kotigental
+    String cleftDesc = json['operasi']?['jenis_kelainan']?['nama_kelainan']
+        ?? json['kelainan_kotigental']
+        ?? '-';
 
-    String date = '';
-    if (json['operasi'] != null && json['operasi']['tanggal_operasi'] != null) {
-      date = json['operasi']['tanggal_operasi'];
-    } else if (json['tanggal_lahir'] != null) {
-      date = json['tanggal_lahir'];
-    }
+    // Ambil tanggal operasi jika ada, jika tidak fallback ke tanggal_lahir
+    String date = json['operasi']?['tanggal_operasi']
+        ?? json['tanggal_lahir']
+        ?? '-';
 
     return PatientModel(
       id: json['id'].toString(),

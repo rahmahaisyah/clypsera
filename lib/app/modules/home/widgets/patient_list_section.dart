@@ -61,21 +61,22 @@ class PatientListSection extends StatelessWidget {
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           if (showHeader) header(),
           if (showHeader) const SizedBox(height: 8),
-          Expanded(
-            child: ListView.builder(
-              itemCount: currentPatients.length,
-              itemBuilder: (context, index) {
-                final patient = currentPatients[index];
-                return PatientListItem(
-                  patient: patient,
-                  onTap: () =>
-                      Get.toNamed(Routes.detailPatient, arguments: patient.id),
-                );
-              },
-            ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: currentPatients.length,
+            itemBuilder: (context, index) {
+              final patient = currentPatients[index];
+              return PatientListItem(
+                patient: patient,
+                onTap: () =>
+                    Get.toNamed(Routes.detailPatient, arguments: patient.id),
+              );
+            },
           ),
         ],
       );

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import '../../../data/models/user_profile_model.dart';
+import '../../../services/core/patient_service.dart';
 
 class DetailPatientController extends GetxController {
   final RxBool isLoading = true.obs;
@@ -14,56 +15,53 @@ class DetailPatientController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    // Get patient ID from arguments
     if (Get.arguments != null && Get.arguments is String) {
       patientId = Get.arguments as String;
     }
-    fetchPatientDetails(patientId ?? "dummy_id_123");
+
+    print("Patient ID received: $patientId"); 
+
+
+    fetchPatientDetails(patientId ?? "");
   }
 
   Future<void> fetchPatientDetails(String id) async {
     try {
       isLoading.value = true;
-      await Future.delayed(
-          const Duration(seconds: 1)); // Simulasi network delay
 
-      // --- Simulasi pengambilan data dari API atau sumber lain ---
-      // Data dummy sekarang menggunakan UserProfileModel tunggal
-      final dummyData = UserProfileModel(
-        id: id,
-        name: 'Rehan Merbabu',
-        email:
-            'rehan.merbabu@example.com', // Tambahkan email jika ada di UI atau diperlukan
-        avatarUrl:
-            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFjZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=300&q=60',
-        gender: Gender.male,
-        dateOfBirth: DateTime(2002, 4, 24),
-        address: 'Asrama putra telkom university, Gedung 7 kamar no.122',
-        phoneNumber: '081234567890', // Contoh
-        nik: '3201234567890001', // Contoh
-        job: 'Mahasiswa', // Contoh
+      print("Fetching patient details for ID: $id"); 
 
-        // Informasi Penyakit
-        type: 'Unilateral cleft lip',
-        organizer: 'Yayasan baik mulia',
-        uploadDate:
-            '08 Juni 2025', // Ini bisa jadi String atau DateTime tergantung kebutuhan
+      if (id.isEmpty) {
+        throw Exception('Patient ID tidak valid');
+      }
 
-        // Informasi Pengobatan
-        operationLocation: 'RS. Mana aja yang deket bojongsoang',
-        operationTechnique: 'Teknik C',
-        operationDate: '12 Juni 2025', // Ini bisa jadi String atau DateTime
-      );
-      patientData.value = dummyData;
-      // --- Akhir Simulasi ---
+      // Use the PatientService instead of direct Dio call
+      final patientDetail = await PatientService.fetchPatientDetail(id);
+
+      patientData.value = patientDetail;
+      print("Patient data loaded successfully");
     } catch (e) {
+      print("Error fetching patient details: $e");
+
+      // Show user-friendly error message
       Get.snackbar(
         'Error',
-        'Gagal memuat detail pasien: ${e.toString()}',
+        e.toString().replaceAll('Exception: ', ''),
         snackPosition: SnackPosition.TOP,
       );
-      print("Error fetching patient details: $e");
+
+      patientData.value = null;
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  // Method untuk refresh data
+  Future<void> refreshPatientData() async {
+    if (patientId != null) {
+      await fetchPatientDetails(patientId!);
     }
   }
 

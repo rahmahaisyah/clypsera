@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../shared/theme/app_style.dart';
 import '../../../shared/widgets/custom_search_bar.dart';
-import '../../home/widgets/patient_list_section.dart';
+import '../../home/widgets/patient_list_item.dart';
 import '../controllers/list_patient_controller.dart';
 import '../widgets/filter_category_chip.dart';
 
@@ -30,6 +30,7 @@ class ListPatientView extends GetView<ListPatientController> {
       ),
       body: Column(
         children: [
+          // Fixed header section
           Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
             child: Column(
@@ -96,12 +97,45 @@ class ListPatientView extends GetView<ListPatientController> {
           ),
           Expanded(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              child: PatientListSection(
-                showHeader: false,
-                patientsToDisplay: controller.filteredPatients,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                
+                if (controller.filteredPatients.isEmpty) {
+                  String message = 'Tidak ada data pasien';
+                  if (controller.searchQuery.value.isNotEmpty) {
+                    message = 'Tidak ada pasien dengan nama "${controller.searchQuery.value}"';
+                  } else if (controller.selectedCleftTypeId.value.isNotEmpty) {
+                    final selectedType = controller.allCleftTypes.firstWhereOrNull(
+                      (type) => type.id == controller.selectedCleftTypeId.value
+                    );
+                    if (selectedType != null) {
+                      message = 'Tidak ada pasien dengan kategori "${selectedType.name}"';
+                    }
+                  }
+                  
+                  return Center(
+                    child: Text(
+                      message,
+                      style: const TextStyle(color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: controller.filteredPatients.length,
+                  itemBuilder: (context, index) {
+                    final patient = controller.filteredPatients[index];
+                    return PatientListItem(
+                      patient: patient,
+                      onTap: () => Get.toNamed(Routes.detailPatient, arguments: patient.id),
+                    );
+                  },
+                );
+              }),
             ),
           ),
         ],

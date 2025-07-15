@@ -82,7 +82,6 @@ class UserProfileModel {
     };
   }
 
-  // Helper untuk konversi Gender dari/ke String (untuk JSON)
   static Gender _genderFromString(String? genderString) {
     switch (genderString?.toLowerCase()) {
       case 'male':

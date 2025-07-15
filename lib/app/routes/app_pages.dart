@@ -28,7 +28,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const initial = Routes.bottomnavigation;
+  static const initial = Routes.splashScreen;
 
   static final routes = [
     GetPage(
