@@ -2,6 +2,7 @@ import 'package:clypsera/app/data/models/user_profile_model.dart';
 import 'package:clypsera/app/shared/theme/app_style.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../data/enums/gender.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/auth_service.dart';
 

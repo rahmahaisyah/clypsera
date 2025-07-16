@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/uidata.dart';
-import '../../../data/models/user_profile_model.dart';
+import '../../../data/enums/gender.dart';
 import '../../../shared/theme/app_style.dart';
 
 class PatientAvatarWidget extends StatelessWidget {

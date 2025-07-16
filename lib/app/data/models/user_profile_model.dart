@@ -1,4 +1,4 @@
-enum Gender { male, female, unknown }
+import '../enums/gender.dart';
 
 class UserProfileModel {
   final String id;
@@ -37,56 +37,30 @@ class UserProfileModel {
     this.operationDate,
   });
 
-  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+  factory UserProfileModel.fromApiJson(Map<String, dynamic> json) {
+    final operasi = json['operasi'] ?? {};
     return UserProfileModel(
-      id: json['id'] as String,
-      name: json['name'] as String? ?? '',
-      email: json['email'] as String? ?? '',
-      avatarUrl: json['avatarUrl'] as String?,
-      gender: _genderFromString(json['gender'] as String?),
-      job: json['job'] as String?,
-      dateOfBirth: json['dateOfBirth'] != null
-          ? DateTime.tryParse(json['dateOfBirth'] as String)
-          : null,
-      phoneNumber: json['phoneNumber'] as String?,
-      nik: json['nik'] as String?,
-      address: json['address'] as String?,
-      type: json['type'] as String? ?? 'N/A',
-      organizer: json['organizer'] as String? ?? 'N/A',
-      uploadDate: json['uploadDate'] as String? ?? 'N/A',
-      operationLocation: json['operationLocation'] as String? ?? 'N/A',
-      operationTechnique: json['operationTechnique'] as String? ?? 'N/A',
-      operationDate: json['operationDate'] as String? ?? 'N/A',
+      id: (json['id'] ?? '').toString(),
+      name: json['nama_pasien'] ?? '',
+      email: '', 
+      avatarUrl: '',
+      gender: _genderFromApiCode(json['jenis_kelamin']),
+      dateOfBirth: DateTime.tryParse(json['tanggal_lahir'] ?? ''),
+      phoneNumber: json['no_telepon'],
+      address: json['alamat_pasien'],
+      type: json['kelainan_kotigental'],
+      operationLocation: operasi['lokasi_operasi'],
+      operationTechnique: operasi['teknik_operasi'],
+      operationDate: operasi['tanggal_operasi'],
     );
   }
 
-  // Method untuk mengubah instance menjadi JSON (engirim ke server)
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'email': email,
-      'avatarUrl': avatarUrl,
-      'gender': gender,
-      'job': job,
-      'dateOfBirth': dateOfBirth?.toIso8601String(),
-      'phoneNumber': phoneNumber,
-      'nik': nik,
-      'address': address,
-      'type': type,
-      'organizer': organizer,
-      'uploadDate': uploadDate,
-      'operationLocation': operationLocation,
-      'operationTechnique': operationTechnique,
-      'operationDate': operationDate,
-    };
-  }
-
-  static Gender _genderFromString(String? genderString) {
-    switch (genderString?.toLowerCase()) {
-      case 'male':
+// Method baru untuk mapping gender dari kode API
+  static Gender _genderFromApiCode(String? genderCode) {
+    switch (genderCode) {
+      case 'L':
         return Gender.male;
-      case 'female':
+      case 'P':
         return Gender.female;
       default:
         return Gender.unknown;

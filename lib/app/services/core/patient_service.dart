@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import '../../data/models/patient_detail_model.dart';
 import '../../data/models/patient_model.dart';
-import '../../data/models/user_profile_model.dart';
 import '../api_service.dart';
 
 class PatientService {
@@ -62,67 +62,36 @@ class PatientService {
       throw Exception('Terjadi kesalahan: $e');
     }
   }
-  static Future<UserProfileModel> fetchPatientDetail(String patientId) async {
+
+  String _formatImageUrl(String? localPath) {
+    if (localPath == null) return '';
+
+    // If it's already a full URL, return as is
+    if (localPath.startsWith('http://') || localPath.startsWith('https://')) {
+      return localPath;
+    }
+
+    // Construct a full URL based on your backend configuration
+    return 'https://your-backend-domain.com/images/$localPath';
+  }
+
+  static Future<PatientDetailModel?> fetchPatientDetail(
+      String patientId) async {
     try {
-      print('Fetching patient detail for ID: $patientId');
-      
-      if (patientId.isEmpty) {
-        throw Exception('Patient ID tidak valid');
-      }
-
-      final response = await ApiService.dio.get('/pasien/$patientId');
-
-      print('Response status: ${response.statusCode}');
-      print('Response data: ${response.data}');
+      final response = await ApiService.dio.get('/pasien/show/$patientId');
 
       if (response.statusCode == 200) {
         final responseData = response.data;
+        final List dataList = responseData['data'];
 
-        // Handle different response structures
-        if (responseData is Map<String, dynamic>) {
-          UserProfileModel patientDetail;
-          
-          if (responseData.containsKey('data')) {
-            // Response wrapped in 'data' key
-            patientDetail = UserProfileModel.fromJson(responseData['data']);
-          } else if (responseData.containsKey('patient')) {
-            // Response wrapped in 'patient' key
-            patientDetail = UserProfileModel.fromJson(responseData['patient']);
-          } else {
-            // Direct response
-            patientDetail = UserProfileModel.fromJson(responseData);
-          }
-          
-          print('Successfully parsed patient detail');
-          return patientDetail;
-        } else {
-          print('Unexpected response structure: $responseData');
-          throw Exception('Format response tidak sesuai');
+        if (dataList.isNotEmpty) {
+          return PatientDetailModel.fromJson(dataList.first);
         }
-      } else {
-        throw Exception('HTTP Error: ${response.statusCode}');
       }
+      throw Exception('Tidak dapat menemukan data pasien');
     } on DioException catch (e) {
-      print('DioException: ${e.message}');
-      if (e.response != null) {
-        print('Error response: ${e.response?.data}');
-        print('Error status: ${e.response?.statusCode}');
-      }
-
-      if (e.response?.statusCode == 401) {
-        throw Exception('Token expired atau tidak valid');
-      } else if (e.response?.statusCode == 403) {
-        throw Exception('Akses ditolak');
-      } else if (e.response?.statusCode == 404) {
-        throw Exception('Data pasien tidak ditemukan');
-      } else if (e.response?.statusCode == 500) {
-        throw Exception('Server error');
-      } else {
-        throw Exception('Gagal mengambil detail pasien: ${e.message}');
-      }
-    } catch (e) {
-      print('General error: $e');
-      throw Exception('Terjadi kesalahan: $e');
+      print('Error fetching patient detail: ${e.message}');
+      throw Exception('Gagal mengambil detail pasien: ${e.message}');
     }
   }
 }

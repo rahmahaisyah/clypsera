@@ -1,11 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../data/models/user_profile_model.dart';
+import '../../../data/models/patient_detail_model.dart';
 import '../../../services/core/patient_service.dart';
 
 class DetailPatientController extends GetxController {
   final RxBool isLoading = true.obs;
-  final Rx<UserProfileModel?> patientData = Rx<UserProfileModel?>(null);
-
+  final Rx<PatientDetailModel?> patientData = Rx<PatientDetailModel?>(null);
+  final RxBool isRequestDataAvailable = false.obs;
+  final RxBool isImagesExpanded = false.obs;
   final RxBool isPatientInfoExpanded = true.obs;
   final RxBool isDiseaseInfoExpanded = false.obs;
   final RxBool isTreatmentInfoExpanded = false.obs;
@@ -15,76 +17,158 @@ class DetailPatientController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    // Get patient ID from arguments
-    if (Get.arguments != null && Get.arguments is String) {
-      patientId = Get.arguments as String;
+    patientId = Get.arguments as String?;
+    if (patientId != null) {
+      fetchPatientDetails(patientId!);
     }
-
-    print("Patient ID received: $patientId"); 
-
-
-    fetchPatientDetails(patientId ?? "");
   }
 
   Future<void> fetchPatientDetails(String id) async {
     try {
       isLoading.value = true;
-
-      print("Fetching patient details for ID: $id"); 
-
-      if (id.isEmpty) {
-        throw Exception('Patient ID tidak valid');
-      }
-
-      // Use the PatientService instead of direct Dio call
-      final patientDetail = await PatientService.fetchPatientDetail(id);
-
-      patientData.value = patientDetail;
-      print("Patient data loaded successfully");
+      final patient = await PatientService.fetchPatientDetail(id);
+      patientData.value = patient;
     } catch (e) {
-      print("Error fetching patient details: $e");
-
-      // Show user-friendly error message
+      print('Error: $e');
       Get.snackbar(
         'Error',
-        e.toString().replaceAll('Exception: ', ''),
+        'Gagal memuat detail pasien',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
         snackPosition: SnackPosition.TOP,
       );
-
-      patientData.value = null;
     } finally {
       isLoading.value = false;
     }
   }
 
-  // Method untuk refresh data
   Future<void> refreshPatientData() async {
     if (patientId != null) {
       await fetchPatientDetails(patientId!);
     }
   }
 
-  void togglePatientInfoExpansion(bool isExpanded) {
-    isPatientInfoExpanded.value = isExpanded;
+  void requestAdditionalData() {
+    try {
+      Get.snackbar(
+        'Berhasil',
+        'Link reset berhasil dikirim',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Gagal',
+        'Gagal mengirim link reset',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 
-  void toggleDiseaseInfoExpansion(bool isExpanded) {
-    isDiseaseInfoExpanded.value = isExpanded;
+  void togglePatientInfoExpansion(bool value) {
+    isPatientInfoExpanded.value = value;
   }
 
-  void toggleTreatmentInfoExpansion(bool isExpanded) {
-    isTreatmentInfoExpanded.value = isExpanded;
+  void toggleDiseaseInfoExpansion(bool value) {
+    isDiseaseInfoExpanded.value = value;
   }
 
-  void onOtherInfoTapped(bool isExpanded) {
-    Get.snackbar(
-        'Navigasi', isExpanded ? 'Menuju Informasi Lainnya...' : 'Ditutup',
-        snackPosition: SnackPosition.TOP);
+  void toggleTreatmentInfoExpansion(bool value) {
+    isTreatmentInfoExpanded.value = value;
   }
 
-  void onImagesTapped(bool isExpanded) {
-    Get.snackbar('Navigasi', isExpanded ? 'Menuju Galeri Gambar...' : 'Ditutup',
-        snackPosition: SnackPosition.TOP);
+  void toggleImagesExpansion(bool value) {
+    isImagesExpanded.value = value;
+  }
+
+  void viewBeforeOperationImage() {
+    final beforeImage = patientData.value?.beforeOperationImage;
+    if (beforeImage != null) {
+      showImageDialog('Gambar Sebelum Operasi', beforeImage);
+    } else {
+      Get.snackbar(
+        'Informasi',
+        'Tidak ada gambar sebelum operasi',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  void viewAfterOperationImage() {
+    final afterImage = patientData.value?.afterOperationImage;
+    if (afterImage != null) {
+      showImageDialog('Gambar Setelah Operasi', afterImage);
+    } else {
+      Get.snackbar(
+        'Informasi',
+        'Tidak ada gambar setelah operasi',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  void showImageDialog(String title, String imageUrl) {
+    if (imageUrl.startsWith('file:///') || !imageUrl.startsWith('http')) {
+      Get.dialog(
+        AlertDialog(
+          title: Text(title),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.error, color: Colors.red, size: 50),
+              const SizedBox(height: 10),
+              Text(
+                'Gagal memuat gambar\nFormat URL tidak valid: $imageUrl',
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(),
+              child: const Text('Tutup'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+    Get.dialog(
+      AlertDialog(
+        title: Text(title),
+        content: Image.network(
+          imageUrl,
+          fit: BoxFit.contain,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return const Center(child: CircularProgressIndicator());
+          },
+          errorBuilder: (context, error, stackTrace) {
+            print('Image load error: $error');
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.error, color: Colors.red, size: 50),
+                const SizedBox(height: 10),
+                Text(
+                  'Gagal memuat gambar\n$error',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            );
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Tutup'),
+          ),
+        ],
+      ),
+      barrierDismissible: true,
+    );
   }
 }
