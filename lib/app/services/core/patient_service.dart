@@ -63,18 +63,6 @@ class PatientService {
     }
   }
 
-  String _formatImageUrl(String? localPath) {
-    if (localPath == null) return '';
-
-    // If it's already a full URL, return as is
-    if (localPath.startsWith('http://') || localPath.startsWith('https://')) {
-      return localPath;
-    }
-
-    // Construct a full URL based on your backend configuration
-    return 'https://your-backend-domain.com/images/$localPath';
-  }
-
   static Future<PatientDetailModel?> fetchPatientDetail(
       String patientId) async {
     try {

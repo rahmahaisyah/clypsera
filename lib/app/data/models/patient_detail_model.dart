@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import '../../services/api_service.dart';
 import '../enums/gender.dart';
 
 class PatientDetailModel {
@@ -49,7 +50,6 @@ class PatientDetailModel {
   factory PatientDetailModel.fromJson(Map<String, dynamic> json) {
     final operasi = json['operasi'] ?? {};
     final jenisKelainan = operasi['jenis_kelainan'] ?? {};
-
     return PatientDetailModel(
       id: json['id'] ?? 0,
       name: json['nama_pasien'] ?? 'Tidak Diketahui',
@@ -67,7 +67,6 @@ class PatientDetailModel {
           ? DateTime.tryParse(json['created_at'])
           : null,
 
-      // Operation Information
       operationLocation: operasi['lokasi_operasi'] ?? 'Tidak Tersedia',
       operationTechnique: operasi['tehnik_operasi'] ?? 'Tidak Tersedia',
       operationDate: operasi['tanggal_operasi'] != null
@@ -75,18 +74,22 @@ class PatientDetailModel {
           : null,
       followUp: operasi['follow_up'] ?? 'Tidak Ada Informasi Tindak Lanjut',
 
-      // Additional Information
       familyHistory: json['riwayat_keluarga_pasien'] ?? 'Tidak Diketahui',
       ethnicGroup: json['suku_pasien'] ?? 'Tidak Diketahui',
       childOrder: json['pasien_anak_ke_berapa'],
-
-      // Operation Images
-      beforeOperationImage: operasi['foto_sebelum_operasi'],
-      afterOperationImage: operasi['foto_setelah_operasi'],
+      beforeOperationImage: _formatImageUrl(operasi['foto_sebelum_operasi']),
+      afterOperationImage: _formatImageUrl(operasi['foto_setelah_operasi']),
     );
   }
+  static String _formatImageUrl(String? localPath) {
+    if (localPath == null || localPath.isEmpty) return '';
+    if (localPath.startsWith('http://') || localPath.startsWith('https://')) {
+      return localPath;
+    }
+    final baseUrl = ApiService.dio.options.baseUrl.replaceFirst('/api', '');
+    return '$baseUrl$localPath';
+  }
 
-  // Helper methods
   String formatDate(DateTime? date) {
     return date != null
         ? DateFormat('dd MMMM yyyy').format(date)
@@ -99,7 +102,6 @@ class PatientDetailModel {
     final now = DateTime.now();
     int age = now.year - dateOfBirth!.year;
 
-    // Check if birthday hasn't occurred this year
     if (now.month < dateOfBirth!.month ||
         (now.month == dateOfBirth!.month && now.day < dateOfBirth!.day)) {
       age--;
