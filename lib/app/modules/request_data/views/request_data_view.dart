@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../routes/app_pages.dart';
 import '../../../shared/widgets/custom_textform.dart';
 import '../../../shared/widgets/custom_button.dart';
 import '../../../shared/theme/app_style.dart';
 import '../controllers/request_data_controller.dart';
 import '../widgets/category_card.dart';
-import '../widgets/request_dialog.dart';
 
 class RequestDataView extends GetView<RequestDataController> {
   const RequestDataView({super.key});
@@ -64,30 +64,50 @@ class RequestDataView extends GetView<RequestDataController> {
                 border: Border.all(color: Colors.grey[300]!),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Row(
-                children: [
-                  CircleAvatar(child: Icon(Icons.person)),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text('Nama cowo',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text('Palate anatomy',
-                            style: TextStyle(fontSize: 12, color: Colors.grey)),
-                      ],
-                    ),
+              child: Obx(() {
+                final patient = controller.selectedPatient.value;
+
+                if (patient == null) {
+                  return Row(
+                    children: [
+                      const CircleAvatar(child: Icon(Icons.person)),
+                      const SizedBox(width: 12),
+                      Text(
+                        'Pilih Pasien',
+                        style: Style.headLineStyle9,
+                      ),
+                    ],
+                  );
+                }
+
+                return GestureDetector(
+                  onTap: () => Get.toNamed(Routes.detailPatient,
+                      arguments: patient.id.toString()),
+                  child: Row(
+                    children: [
+                      const CircleAvatar(child: Icon(Icons.person)),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(patient.name, style: Style.headLineStyle9),
+                            const SizedBox(height: 4),
+                            Text(patient.diseaseType ?? '-',
+                                style: Style.headLineStyle15),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Icon(Icons.keyboard_arrow_down),
-                ],
-              ),
+                );
+              }),
             ),
             const SizedBox(height: 24),
             Text('Kategori pengajuan', style: Style.headLineStyle5),
             const SizedBox(height: 12),
             Obx(() => SizedBox(
-                  height: null, // biarkan tinggi menyesuaikan
+                  height: null,
                   child: Row(
                     children: List.generate(controller.categories.length, (i) {
                       final cat = controller.categories[i];
@@ -113,10 +133,7 @@ class RequestDataView extends GetView<RequestDataController> {
             CustomButton(
               text: 'Ajukan data',
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => const RequestDialog(),
-                );
+                controller.submitData();
               },
               color: Style.primaryColor,
               textStyle: Style.headLineStyle6.copyWith(color: Colors.white),

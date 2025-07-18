@@ -19,6 +19,9 @@ class AuthService {
         final accessToken = data['access_token'];
         if (accessToken != null && accessToken is String) {
           await prefs.setString('access_token', accessToken);
+          await prefs.setInt('user_id', data['user']['id']);
+          await prefs.setString(
+              'user_scope', data['user']['scope'] ?? 'sendiri');
         } else {
           throw Exception('Akses token tidak ditemukan pada response');
         }
@@ -32,6 +35,34 @@ class AuthService {
     } catch (e) {
       throw Exception('Terjadi kesalahan: $e');
     }
+  }
+
+  Future<Map<String, dynamic>?> getLoginData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
+
+      if (token == null) return null;
+
+      final response = await ApiService.dio.get(
+        '/auth/login',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'name': response.data['user']['name'],
+          'email': response.data['user']['email'],
+        };
+      }
+    } catch (e) {
+      print('Error getting login data: $e');
+    }
+    return null;
   }
 
   Future<String?> forgetPassword(String email) async {
@@ -58,7 +89,13 @@ class AuthService {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('access_token');
-      await ApiService.dio.post(
+
+      if (token == null) {
+        await prefs.clear();
+        return;
+      }
+
+      final response = await ApiService.dio.post(
         '/auth/logout',
         options: Options(
           headers: {
@@ -66,12 +103,41 @@ class AuthService {
           },
         ),
       );
-      await prefs.clear();
+
+      if (response.statusCode == 200) {
+        await prefs.remove('access_token');
+        await prefs.remove('user_id');
+        await prefs.remove('user_scope');
+      } else {
+        throw Exception(response.data['message'] ?? 'Logout gagal');
+      }
     } on DioException catch (e) {
-      throw Exception(e.response?.data['message'] ?? 'Logout gagal');
+      if (e.response?.statusCode == 401) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+      } else {
+        throw Exception(e.response?.data['message'] ?? 'Logout gagal');
+      }
     } catch (e) {
       throw Exception('Terjadi kesalahan: $e');
     }
+  }
+
+  Future<int?> getCurrentUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('user_id');
+
+    if (userId == null) {
+      print('User ID tidak ditemukan');
+      return null;
+    }
+
+    return userId;
+  }
+
+  Future<String?> getCurrentUserScope() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_scope') ?? 'sendiri';
   }
 
   Future<String?> getToken() async {
