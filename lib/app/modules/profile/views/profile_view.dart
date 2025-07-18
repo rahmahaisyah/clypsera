@@ -14,26 +14,12 @@ class ProfileView extends GetView<ProfileController> {
       appBar: CustomAppbar(),
       backgroundColor: Style.whiteColor,
       body: Obx(() {
-        if (controller.isLoading.value && controller.currentUser.value == null) {
+        if (controller.isLoading.value &&
+            controller.currentUser.value == null) {
           return Center(
               child: CircularProgressIndicator(color: Style.primaryColor));
         }
-        if (controller.errorMessage.isNotEmpty && controller.currentUser.value == null) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                controller.errorMessage.value,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Style.redColor)
-              ),
-            ),
-          );
-        }
-        if (controller.currentUser.value == null) {
-          return const Center(
-              child: Text('Tidak dapat memuat data profil. Silakan coba lagi.'));
-        }
+
         final user = controller.currentUser.value!;
 
         return RefreshIndicator(
@@ -43,14 +29,21 @@ class ProfileView extends GetView<ProfileController> {
             physics: const AlwaysScrollableScrollPhysics(
                 parent: BouncingScrollPhysics()),
             children: [
-              ProfileHeaderWidget(
-                user: user,
-                onEditProfileTap: controller.navigateToEditProfile,
-              ),
+              ProfileHeaderWidget(user: user),
+              if (controller.errorMessage.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    controller.errorMessage.value,
+                    style: TextStyle(color: Style.redColor),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextButton.icon(
-                  icon: Icon(Icons.logout_rounded, color: Style.redColor, size: 26),
+                  icon: Icon(Icons.logout_rounded,
+                      color: Style.redColor, size: 26),
                   label: Text(
                     'Log Out',
                     style: Style.headLineStyle21,
@@ -64,7 +57,7 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20), 
+              const SizedBox(height: 20),
             ],
           ),
         );

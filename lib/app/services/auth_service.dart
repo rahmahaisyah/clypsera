@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'api_service.dart';
 
 class AuthService {
+  final Dio dio = Dio();
+  
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await ApiService.dio.post(
@@ -12,6 +14,7 @@ class AuthService {
           'password': password,
         },
       );
+      
       if (response.statusCode == 200) {
         final data = response.data;
         final prefs = await SharedPreferences.getInstance();
@@ -19,9 +22,31 @@ class AuthService {
         final accessToken = data['access_token'];
         if (accessToken != null && accessToken is String) {
           await prefs.setString('access_token', accessToken);
-          await prefs.setInt('user_id', data['user']['id']);
-          await prefs.setString(
-              'user_scope', data['user']['scope'] ?? 'sendiri');
+          
+          // Simpan user data dengan null check yang lebih baik
+          final userData = data['user'];
+          if (userData != null) {
+            await prefs.setInt('user_id', userData['id'] ?? 0);
+            await prefs.setString('user_scope', userData['scope'] ?? 'sendiri');
+            
+            // Simpan name dan email dengan debug logging
+            final userName = userData['name'] ?? userData['nama'] ?? '';
+            final userEmail = userData['email'] ?? '';
+            
+            print('Saving user data:');
+            print('Name: $userName');
+            print('Email: $userEmail');
+            
+            await prefs.setString('user_name', userName);
+            await prefs.setString('email', userEmail);
+            
+            // Verifikasi data tersimpan
+            final savedName = prefs.getString('user_name');
+            final savedEmail = prefs.getString('email');
+            print('Verified saved data:');
+            print('Saved Name: $savedName');
+            print('Saved Email: $savedEmail');
+          }
         } else {
           throw Exception('Akses token tidak ditemukan pada response');
         }
@@ -35,34 +60,6 @@ class AuthService {
     } catch (e) {
       throw Exception('Terjadi kesalahan: $e');
     }
-  }
-
-  Future<Map<String, dynamic>?> getLoginData() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('access_token');
-
-      if (token == null) return null;
-
-      final response = await ApiService.dio.get(
-        '/auth/login',
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
-        ),
-      );
-
-      if (response.statusCode == 200) {
-        return {
-          'name': response.data['user']['name'],
-          'email': response.data['user']['email'],
-        };
-      }
-    } catch (e) {
-      print('Error getting login data: $e');
-    }
-    return null;
   }
 
   Future<String?> forgetPassword(String email) async {
@@ -105,9 +102,12 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
+        // Clear all user data
         await prefs.remove('access_token');
         await prefs.remove('user_id');
         await prefs.remove('user_scope');
+        await prefs.remove('user_name');
+        await prefs.remove('email');
       } else {
         throw Exception(response.data['message'] ?? 'Logout gagal');
       }

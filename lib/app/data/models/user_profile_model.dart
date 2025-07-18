@@ -9,8 +9,8 @@ class UserProfileModel {
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
-      name: json['name'] ?? '',
-      email: json['email'] ?? '',
+      name: json['name'] ,
+      email: json['email'],
     );
   }
 }

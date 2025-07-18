@@ -33,9 +33,9 @@ class LoginController extends GetxController {
 
     try {
       isLoading.value = true;
-      final responseData =
-          await _authService.login(email.value, password.value);
+      final responseData = await _authService.login(email.value, password.value);
 
+      // Handle remember me functionality
       final prefs = await SharedPreferences.getInstance();
       if (rememberMe.value) {
         await prefs.setString('remember_email', email.value);
@@ -43,8 +43,13 @@ class LoginController extends GetxController {
         await prefs.remove('remember_email');
       }
 
-      Get.snackbar('Sukses',
-          'Selamat datang, ${responseData['user']?['name'] ?? 'User'}');
+      // Get user name from response or stored data
+      final userName = responseData['user']?['name'] ?? 
+                       responseData['user']?['nama'] ?? 
+                       prefs.getString('user_name') ?? 
+                       'User';
+
+      Get.snackbar('Sukses', 'Selamat datang, $userName');
       Get.offAllNamed(Routes.bottomnavigation);
     } catch (e) {
       Get.snackbar('Login Gagal', e.toString().replaceAll('Exception: ', ''));

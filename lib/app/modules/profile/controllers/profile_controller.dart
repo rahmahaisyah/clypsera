@@ -20,29 +20,41 @@ class ProfileController extends GetxController {
   Future<void> fetchUserProfile() async {
     isLoading.value = true;
     errorMessage.value = '';
+
     try {
       final prefs = await SharedPreferences.getInstance();
-      final name = prefs.getString('user_name');
-      final email = prefs.getString('user_email');
 
-      if (name != null && email != null) {
+      // Debug: Print all stored keys
+      print('=== SharedPreferences Debug ===');
+      final keys = prefs.getKeys();
+      for (String key in keys) {
+        final value = prefs.get(key);
+        print('Key: $key, Value: $value');
+      }
+      print('=== End Debug ===');
+
+      final name = prefs.getString('user_name') ?? '';
+      final email = prefs.getString('email') ?? '';
+
+      print('Loaded user_name: "$name"');
+      print('Loaded email: "$email"');
+      print('Name length: ${name.length}');
+      print('Email length: ${email.length}');
+
+      if (name.isNotEmpty && email.isNotEmpty) {
         currentUser.value = UserProfileModel(
           name: name,
           email: email,
         );
+        print('User profile created successfully');
       } else {
-        final loginData = await _authService.getLoginData();
-        if (loginData != null) {
-          currentUser.value = UserProfileModel(
-            name: loginData['name'] ?? '',
-            email: loginData['email'] ?? '',
-          );
-          
-          await prefs.setString('user_name', currentUser.value!.name);
-          await prefs.setString('user_email', currentUser.value!.email);
-        } else {
-          errorMessage.value = 'Gagal memuat data profil.';
-        }
+        errorMessage.value = 'Data profil belum tersedia. Silakan login ulang.';
+        print('Profile data is empty - Name: "$name", Email: "$email"');
+
+        // Jika data kosong, coba redirect ke login
+        Future.delayed(Duration(seconds: 2), () {
+          Get.offAllNamed(Routes.login);
+        });
       }
     } catch (e) {
       errorMessage.value = "Terjadi kesalahan: ${e.toString()}";
